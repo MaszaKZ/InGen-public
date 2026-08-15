@@ -1,0 +1,48 @@
+{
+  "schema_version": "w10-data-manifest-public-v1",
+  "bundle": {
+    "name": "ingen-raw-evidence-v1.zip",
+    "sha256": "950dfb8d0b6958fcbbad7c607940c6f5337eec9864fac07732948b0d81c7bba4",
+    "size_bytes": 1653594,
+    "availability_note": "Separately supplied; this public repository provides no download location."
+  },
+  "unbundled_note": "Raw outputs not consumed by any verifier or test (W03/W04/W05 raw generations and the W07 holdout-diagnostic pool) are not distributed with this snapshot and are regenerable through the Tier 2 rerun path.",
+  "files": [
+    {
+      "name": "W06_Raw_Model_Outputs.jsonl",
+      "path": "week-06/W06_Raw_Model_Outputs.jsonl",
+      "sha256": "267f89874a9b10030916d6cc341a31c67ab99ed0cc4f37c57377b6bca085f12f",
+      "size_bytes": 655555
+    },
+    {
+      "name": "W06_Judge_Ratings.csv",
+      "path": "week-06/W06_Judge_Ratings.csv",
+      "sha256": "c8e913ef09d8c291370fd6152b358f948bd911937590bdf0ec00ed195cffc113",
+      "size_bytes": 394510
+    },
+    {
+      "name": "W07_Preflight_Raw_Model_Outputs.jsonl",
+      "path": "week-07/W07_Preflight_Raw_Model_Outputs.jsonl",
+      "sha256": "16443b67f28e7c6e631fe95318962192e7e7b260e495a284a80064858e131a40",
+      "size_bytes": 389789
+    },
+    {
+      "name": "W07_Raw_Model_Outputs.jsonl",
+      "path": "week-07/W07_Raw_Model_Outputs.jsonl",
+      "sha256": "d998be244dcc1e91b78aeaea8c3aaa920ee0dff0186e006bd0955756b7594de5",
+      "size_bytes": 7308850
+    },
+    {
+      "name": "W07_Judge_Ratings.csv",
+      "path": "week-07/W07_Judge_Ratings.csv",
+      "sha256": "0d601af2ca82fe2d9ca6cdec108427bc0c4ffc3e5fede7adaf461fc3c41f79dc",
+      "size_bytes": 16432178
+    },
+    {
+      "name": "W07_Judge_Gold_Ratings.csv",
+      "path": "week-07/W07_Judge_Gold_Ratings.csv",
+      "sha256": "a3f19e28adccf3206db279c80a54e67d7b1f1893d50690bb58ec7dc88cac05a3",
+      "size_bytes": 427827
+    }
+  ]
+}

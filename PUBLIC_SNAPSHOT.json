@@ -1,0 +1,30 @@
+{
+  "deterministic": true,
+  "export_manifest_schema": "ingen-public-export-v1",
+  "schema_version": "ingen-public-snapshot-v1",
+  "source_commit": "3a6441757574dea21093510f6a3786c95ee92009",
+  "source_commit_timestamp": "2026-08-14T17:52:39-04:00",
+  "transformed_paths": [
+    ".gitattributes",
+    ".gitignore",
+    "README.md",
+    "week-06/W06_Mid_Review_Work_Process.md",
+    "week-07/README.md",
+    "week-07/W07_Precalibration_Audit.md",
+    "week-07/W07_Prompt_Correction_Review.md",
+    "week-07/Wk-07-ResearchLog.md",
+    "week-09/W09_Paper_Draft_v1.md",
+    "week-09/W09_Self_Critique.md",
+    "week-10/README.md",
+    "week-10/W10_Feedback.md",
+    "week-10/W10_Reproducibility_Package/README.md",
+    "week-10/W10_Reproducibility_Package/W10_CleanEnv_Test_Transcript.md",
+    "week-10/W10_Reproducibility_Package/data_manifest.json",
+    "week-10/W10_Reproducibility_Package/fetch_data.py",
+    "week-10/W10_Reproducibility_Package/regenerate_all.py",
+    "week-10/W10_Reproducibility_Package/reproduce_fresh.py",
+    "week-10/W10_Reproducibility_Package/test_reproduce_fresh.py",
+    "week-10/Wk-10-ResearchLog.md",
+    "week-10/verify_w10.py"
+  ]
+}

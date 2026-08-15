@@ -1,0 +1,129 @@
+{
+  "schema_version": "w07-compact-run-v1",
+  "created_utc": "2026-07-25T06:40:03.846040+00:00",
+  "started_utc": "2026-07-25T04:55:33.397264+00:00",
+  "phase": "confirmation",
+  "generators": [
+    {
+      "name": "mistral",
+      "id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71"
+    },
+    {
+      "name": "qwen",
+      "id": "Qwen/Qwen2.5-7B-Instruct",
+      "revision": "a09a35458c702b33eeacc393d103063234e8bc28"
+    }
+  ],
+  "prompt_method": "week-07/w07_prompts.py",
+  "prompt_method_version": "w07-corrective-v4-locked",
+  "conditions": [
+    "common_baseline",
+    "adapted_baseline",
+    "deliberation",
+    "structured_output",
+    "constraint_gated"
+  ],
+  "seeds": [
+    20260801,
+    20260802,
+    20260803,
+    20260804,
+    20260805
+  ],
+  "decoding": {
+    "temperature": 0.2,
+    "top_p": 0.9,
+    "top_k": 0,
+    "max_new_tokens": 256
+  },
+  "inference": {
+    "quantization": "NF4",
+    "double_quantization": true,
+    "compute_dtype": "float16",
+    "batch_size": 8
+  },
+  "runtime": {
+    "python": "3.11.15 | packaged by Anaconda, Inc. | (main, Jun 11 2026, 15:12:53) [MSC v.1942 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "packages": {
+      "torch": "2.11.0+cu128",
+      "transformers": "5.12.0",
+      "bitsandbytes": "0.49.2",
+      "accelerate": "1.14.0",
+      "numpy": "2.4.6",
+      "pandas": "3.0.3",
+      "matplotlib": "3.11.0"
+    },
+    "hardware": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+    "peak_cuda_memory_bytes": 6263316992
+  },
+  "row_counts": {
+    "generations": 4800,
+    "judgments": 14400,
+    "results": 4800
+  },
+  "deviations": [],
+  "commands": [
+    ".conda-w01/python.exe week-07/run_w07_replication.py --phase confirmation --batch-size 8",
+    ".conda-w01/python.exe week-07/judge_w07_replication.py --phase confirmation",
+    ".conda-w01/python.exe week-07/analyze_w07.py",
+    ".conda-w01/python.exe week-07/build_w07_notebook.py",
+    ".conda-w01/python.exe -m jupyter nbconvert --to notebook --execute --inplace --ExecutePreprocessor.timeout=900 week-07/W07_Analysis_Notebook.ipynb",
+    ".conda-w01/python.exe week-07/write_w07_report.py",
+    ".conda-w01/python.exe week-07/verify_w07_independent.py --phase confirmation",
+    ".conda-w01/python.exe week-07/test_w07_replication.py"
+  ],
+  "hashes": {
+    "source_bank_sha256": "6b9b3a28dbc92de8a6a4c87fdc43f3b0f88d6a690755fd23a7901caea933109b",
+    "raw_outputs_sha256": "d998be244dcc1e91b78aeaea8c3aaa920ee0dff0186e006bd0955756b7594de5",
+    "judge_ratings_sha256": "0d601af2ca82fe2d9ca6cdec108427bc0c4ffc3e5fede7adaf461fc3c41f79dc",
+    "results_sha256": "33f0bcdb975c7a45849da93c1cdf9a6330a0aba0ea2ee9f3712d9a67c8591841"
+  },
+  "judges": [
+    {
+      "name": "granite8b",
+      "id": "ibm-granite/granite-3.3-8b-instruct",
+      "revision": "51dd4bc2ade4059a6bd87649d68aa11e4fb2529b",
+      "quantized": true,
+      "batch_size": 4,
+      "cost_rank": 2,
+      "loading": "NF4 double-quantized float16 compute"
+    },
+    {
+      "name": "phi4_14b",
+      "id": "microsoft/phi-4",
+      "revision": "2db69c1c3e91a05d2c64a3185acfbaf36f744e25",
+      "trust_remote_code": false,
+      "quantized": true,
+      "batch_size": 2,
+      "cost_rank": 3,
+      "loading": "NF4 double-quantized float16 compute"
+    },
+    {
+      "name": "falcon3_10b",
+      "id": "tiiuae/Falcon3-10B-Instruct",
+      "revision": "8799bc6aec0152757221dc6b272d824642db6202",
+      "quantized": true,
+      "batch_size": 4,
+      "cost_rank": 3,
+      "loading": "NF4 double-quantized float16 compute"
+    }
+  ],
+  "judging_completed_utc": "2026-07-26T04:17:20.652743+00:00",
+  "judge_prompt_version": "w07-action-judge-v20-evidence-grounded-parse-repair",
+  "judge_gate_version": "w07-judge-gates-v5-outcome-focused",
+  "judge_calibration_created_utc": "2026-07-25T02:07:46.604479+00:00",
+  "token_counts": {
+    "maximum_input": 484,
+    "maximum_generated": 194,
+    "mean_generated": 65.82770833333333,
+    "responses_at_generation_cap": 0
+  },
+  "analysis": {
+    "bootstrap_draws": 10000,
+    "bootstrap_unit": "complete scenario family",
+    "pairing": "scenario and seed",
+    "bootstrap_seed": 20260806
+  }
+}

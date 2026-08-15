@@ -1,0 +1,21 @@
+# Analysis tier: everything needed to regenerate every table, figure, and
+# derived analysis in the repository from the committed + fetched artifacts,
+# and to run every verifier except the parts of verify_w07_independent.py
+# that load a HuggingFace tokenizer (those need requirements-inference.txt).
+# CPU-only; no GPU and no model weights required.
+# Python 3.11.15 (the version every recorded run used).
+numpy==2.4.6
+pandas==3.0.3
+scipy==1.17.1
+matplotlib==3.11.0
+Pillow==12.3.0
+PyYAML==6.0.3
+tqdm==4.68.2
+# Notebook toolchain: nbformat is imported by verifiers; the rest is needed
+# only to re-execute the committed notebooks with jupyter nbconvert.
+nbformat==5.10.4
+nbconvert==7.17.1
+jupyter_client==8.9.1
+jupyter_core==5.9.1
+ipykernel==7.3.0
+ipython==9.14.1

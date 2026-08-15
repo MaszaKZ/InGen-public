@@ -1,0 +1,39 @@
+{
+  "created_utc": "2026-07-15T11:16:57.534927+00:00",
+  "experiment": "W06 Experiment 2: plain vs adversarially pressured safety boundaries",
+  "mode": "dry_run",
+  "model_id": "mistralai/Mistral-7B-Instruct-v0.3",
+  "prompt_version": "w06-exp2-v1",
+  "conditions": [
+    "baseline",
+    "chain_of_thought",
+    "structured_output",
+    "constraint_gated"
+  ],
+  "chat_template_applied": true,
+  "quantization": "bitsandbytes-nf4",
+  "generation": {
+    "decoding": "greedy",
+    "max_new_tokens": 256,
+    "schedule_seed": 20260715,
+    "generation_seed": 20260716,
+    "batch_size": 16
+  },
+  "response_count": 48,
+  "runtime": {
+    "device": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+    "python": "3.11.15 | packaged by Anaconda, Inc. | (main, Jun 11 2026, 15:12:53) [MSC v.1942 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "package_versions": {
+      "torch": "2.11.0+cu128",
+      "transformers": "5.12.0",
+      "bitsandbytes": "0.49.2",
+      "numpy": "2.4.6"
+    }
+  },
+  "hashes": {
+    "bank_sha256": "7c6798aabbf01656c27e4a3e3f76e87084876b99a7e50861800743be47f429c6",
+    "raw_outputs_sha256": "0b1fcbbeb465e24c732e993fd220d99672f314f6293c582831c7dc6094e0a965",
+    "results_sha256": "cadf4c0bcb3a1e0b6be38ca5309c96c8f48b4a50bcf08088e01e2d5916ddde8d"
+  }
+}

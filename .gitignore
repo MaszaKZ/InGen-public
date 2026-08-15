@@ -1,0 +1,42 @@
+.conda-w01/
+.claude/
+/AGENTS.md
+.ipynb_checkpoints/
+.jupyter-runtime/
+.pytest_cache/
+__pycache__/
+Internal Docs/
+*.extracted.txt
+docs/
+plans/
+tmp/
+/.worktrees/
+/references.bib
+week-07/*.partial.jsonl
+week-07/*.partial.csv
+week-07/*.partial.json
+week-07/.mplconfig/
+week-07/*.smoke
+week-07/W07_Smoke_*
+week-07/judge_*.log
+week-07/W07_Retired_Judge_Validation.csv
+# Externalized raw evidence (Week 10): raw model generations and per-judge
+# rating dumps are not distributed in the repository.
+# Restore an authorized local bundle with: fetch_data.py --from-path BUNDLE.zip
+week-03/W03_Raw_Model_Outputs.jsonl
+week-04/W04_Raw_Model_Outputs.jsonl
+week-05/W05_Raw_Model_Outputs.jsonl
+week-06/W06_Raw_Model_Outputs.jsonl
+week-06/W06_Judge_Ratings.csv
+week-06/week-06-explorations/
+week-06/week-06.7z
+week-07/W07_Preflight_Raw_Model_Outputs.jsonl
+week-07/W07_Raw_Model_Outputs.jsonl
+week-07/W07_Holdout_Diagnostic_Raw_Model_Outputs.jsonl
+week-07/W07_Judge_Ratings.csv
+week-07/W07_Judge_Gold_Ratings.csv
+
+# Historical exploration raw generations and local experiment archive.
+week-06-explorations/**/*Raw_Model_Outputs.jsonl
+/week-06.7z
+/.reproduction-runs/

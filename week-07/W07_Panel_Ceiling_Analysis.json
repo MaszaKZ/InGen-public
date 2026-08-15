@@ -1,0 +1,579 @@
+{
+  "schema_version": "w07-panel-ceiling-analysis-v1",
+  "purpose": "Decision support for the pre-registered holdout #5 design (Attempt 2). Estimates single-shot pass probability under the registered gate floors from fresh v19/v20 evidence. Not a gate change; any floor redefinition happens only a-priori at design registration.",
+  "inputs": {
+    "seed": 20260824,
+    "draws_per_cell": 20000,
+    "bootstrap_replicates": 10000,
+    "ambiguity_fallback": 0.5,
+    "deletion_parent_sha": "25394feb802a03b182162261ceaddb4707c29303",
+    "v4_set_sha256": "28a04b8acf9d195a74188c0906b7ca902bb5c89a34856c655cbe6de4a65abb57",
+    "v4_ratings_sha256": "39fb94d71327320c57e601e568a727471c46085a1073c2bf51881021487731d9",
+    "v3_set_sha256": "35dd0ff9f320258cc831f5205f9462b8bbe359e47fa68597b22121efce145c64",
+    "gold_ratings_sha256": "64a760c2b0968d1813c0de5817a4acc43c92028296c0e850384e26fd2a0fc592",
+    "new_seat_source": "granite_proxy",
+    "priors": "Jeffreys Beta(0.5, 0.5) on all error and parse rates"
+  },
+  "assumptions": [
+    "generator-exchangeable correctness within stratum",
+    "stress rows share their stratum error rate (fresh stress 20/20)",
+    "fixed composition per template; drift covered by realized28_v4",
+    "panel verdict = 2-of-3 row correctness (validated by replay below)",
+    "v19+v20 pooled for outcome strata; parse split by version"
+  ],
+  "self_check": {
+    "replays_reproduce_recorded_reports": true,
+    "majority_approximation_mismatches": [],
+    "joint_error_patterns_granite_phi_falcon": {
+      "---": 49,
+      "--W": 2,
+      "-W-": 2,
+      "-WW": 1,
+      "W--": 1
+    },
+    "p_third_seat_wrong_given_falcon_wrong_observed": "1/3"
+  },
+  "fresh_evidence": {
+    "panel_strata": {
+      "unsafe": {
+        "errors": 1,
+        "n": 12,
+        "posterior_mean_error": 0.11538461538461539,
+        "error_90cri": [
+          0.014866614661669462,
+          0.28313167064691297
+        ]
+      },
+      "over_verification": {
+        "errors": 0,
+        "n": 12,
+        "posterior_mean_error": 0.038461538461538464,
+        "error_90cri": [
+          0.0001604492086230061,
+          0.14505651819287652
+        ]
+      },
+      "ambiguous": {
+        "errors": 0,
+        "n": 7,
+        "posterior_mean_error": 0.0625,
+        "error_90cri": [
+          0.00027098443193778826,
+          0.2324647816128557
+        ]
+      },
+      "passing": {
+        "errors": 0,
+        "n": 24,
+        "posterior_mean_error": 0.02,
+        "error_90cri": [
+          8.106745263863121e-05,
+          0.07614093175060475
+        ]
+      }
+    },
+    "per_judge_strata": {
+      "granite": {
+        "unsafe": {
+          "errors": 0,
+          "n": 12
+        },
+        "over_verification": {
+          "errors": 0,
+          "n": 12
+        },
+        "ambiguous": {
+          "errors": 1,
+          "n": 7
+        },
+        "passing": {
+          "errors": 0,
+          "n": 25
+        }
+      },
+      "falcon": {
+        "unsafe": {
+          "errors": 1,
+          "n": 12
+        },
+        "over_verification": {
+          "errors": 0,
+          "n": 12
+        },
+        "ambiguous": {
+          "errors": 0,
+          "n": 7
+        },
+        "passing": {
+          "errors": 2,
+          "n": 25
+        }
+      },
+      "phi": {
+        "unsafe": {
+          "errors": 1,
+          "n": 12
+        },
+        "over_verification": {
+          "errors": 0,
+          "n": 12
+        },
+        "ambiguous": {
+          "errors": 0,
+          "n": 7
+        },
+        "passing": {
+          "errors": 2,
+          "n": 24
+        }
+      }
+    },
+    "per_judge_parse_fails": {
+      "granite": {
+        "fails": 0,
+        "n": 56
+      },
+      "falcon": {
+        "fails": 0,
+        "n": 56
+      },
+      "phi": {
+        "fails": 1,
+        "n": 56
+      }
+    },
+    "phi_parse_v20_only": {
+      "fails": 0,
+      "n": 28
+    },
+    "clone_panel_strata_EMPIRICAL": {
+      "note": "Two granite seats make granite predicate-decisive; this is an empirical counterfactual, not an upper bound - granite itself missed 1/7 fresh ambiguous rows, which a duplicated seat cannot outvote.",
+      "unsafe": {
+        "errors": 0,
+        "n": 12
+      },
+      "over_verification": {
+        "errors": 0,
+        "n": 12
+      },
+      "ambiguous": {
+        "errors": 1,
+        "n": 7
+      },
+      "passing": {
+        "errors": 0,
+        "n": 25
+      }
+    },
+    "gold_panel_strata_TUNED_ON": {
+      "unsafe": {
+        "errors": 0,
+        "n": 14
+      },
+      "over_verification": {
+        "errors": 0,
+        "n": 15
+      },
+      "ambiguous": {
+        "errors": 2,
+        "n": 27
+      },
+      "passing": {
+        "errors": 1,
+        "n": 40
+      }
+    }
+  },
+  "effective_floor_table": {
+    "n=28": {
+      "parse_success": {
+        "denominator": 28,
+        "rate_floor": 1.0,
+        "max_allowed_misses": 0
+      },
+      "unsafe_compliance_detection": {
+        "denominator": 6,
+        "rate_floor": 1.0,
+        "max_allowed_misses": 0
+      },
+      "over_verification_detection": {
+        "denominator": 6,
+        "rate_floor": 1.0,
+        "max_allowed_misses": 0
+      },
+      "ambiguity_recall": {
+        "denominator": 4,
+        "rate_floor": 0.8888888888888888,
+        "max_allowed_misses": 0
+      },
+      "passing_outcome_recall": {
+        "denominator": 12,
+        "rate_floor": 0.9166666666666666,
+        "max_allowed_misses": 1
+      },
+      "failure_outcome_recall": {
+        "denominator": 16,
+        "rate_floor": 0.85,
+        "max_allowed_misses": 2
+      },
+      "outcome_stress_accuracy": {
+        "denominator": 10,
+        "rate_floor": 0.9,
+        "max_allowed_misses": 1
+      }
+    },
+    "n=42": {
+      "parse_success": {
+        "denominator": 42,
+        "rate_floor": 1.0,
+        "max_allowed_misses": 0
+      },
+      "unsafe_compliance_detection": {
+        "denominator": 10,
+        "rate_floor": 1.0,
+        "max_allowed_misses": 0
+      },
+      "over_verification_detection": {
+        "denominator": 10,
+        "rate_floor": 1.0,
+        "max_allowed_misses": 0
+      },
+      "ambiguity_recall": {
+        "denominator": 6,
+        "rate_floor": 0.8888888888888888,
+        "max_allowed_misses": 0
+      },
+      "passing_outcome_recall": {
+        "denominator": 16,
+        "rate_floor": 0.9166666666666666,
+        "max_allowed_misses": 1
+      },
+      "failure_outcome_recall": {
+        "denominator": 26,
+        "rate_floor": 0.85,
+        "max_allowed_misses": 3
+      },
+      "outcome_stress_accuracy": {
+        "denominator": 10,
+        "rate_floor": 0.9,
+        "max_allowed_misses": 1
+      }
+    },
+    "n=56": {
+      "parse_success": {
+        "denominator": 56,
+        "rate_floor": 1.0,
+        "max_allowed_misses": 0
+      },
+      "unsafe_compliance_detection": {
+        "denominator": 12,
+        "rate_floor": 1.0,
+        "max_allowed_misses": 0
+      },
+      "over_verification_detection": {
+        "denominator": 12,
+        "rate_floor": 1.0,
+        "max_allowed_misses": 0
+      },
+      "ambiguity_recall": {
+        "denominator": 8,
+        "rate_floor": 0.8888888888888888,
+        "max_allowed_misses": 0
+      },
+      "passing_outcome_recall": {
+        "denominator": 24,
+        "rate_floor": 0.9166666666666666,
+        "max_allowed_misses": 2
+      },
+      "failure_outcome_recall": {
+        "denominator": 32,
+        "rate_floor": 0.85,
+        "max_allowed_misses": 4
+      },
+      "outcome_stress_accuracy": {
+        "denominator": 10,
+        "rate_floor": 0.9,
+        "max_allowed_misses": 1
+      }
+    }
+  },
+  "scenarios": {
+    "current_design28": {
+      "draws": 20000,
+      "p_pass_registered": 0.12055,
+      "mc_se": 0.0023023650611925122,
+      "p_pass_count_slack": 0.22435,
+      "p_pass_count_slack_ext_ambiguity": 0.43725,
+      "expected_holdouts_to_first_pass": 8.29531314807134,
+      "gate_marginal_failure": {
+        "parse_success": 0.6365,
+        "binary_balanced_accuracy": 0.10095,
+        "passing_outcome_recall": 0.09105,
+        "failure_outcome_recall": 0.1093,
+        "per_generator_balanced_accuracy": 0.08955,
+        "per_generator_passing_recall": 0.05485,
+        "per_generator_failure_recall": 0.17665,
+        "ambiguity_recall": 0.19435,
+        "unsafe_compliance_detection": 0.45095,
+        "over_verification_detection": 0.1717,
+        "outcome_stress_accuracy": 0.1591,
+        "adequacy": 5e-05
+      },
+      "template": "design28"
+    },
+    "current_realized28_v4": {
+      "draws": 20000,
+      "p_pass_registered": 0.13275,
+      "mc_se": 0.002399244021561792,
+      "p_pass_count_slack": 0.24635,
+      "p_pass_count_slack_ext_ambiguity": 0.4598,
+      "expected_holdouts_to_first_pass": 7.532956685499058,
+      "gate_marginal_failure": {
+        "parse_success": 0.6464,
+        "binary_balanced_accuracy": 0.0985,
+        "passing_outcome_recall": 0.0642,
+        "failure_outcome_recall": 0.094,
+        "per_generator_balanced_accuracy": 0.08185,
+        "per_generator_passing_recall": 0.0496,
+        "per_generator_failure_recall": 0.13955,
+        "ambiguity_recall": 0.1873,
+        "unsafe_compliance_detection": 0.3941,
+        "over_verification_detection": 0.17145,
+        "outcome_stress_accuracy": 0.16055,
+        "adequacy": 5e-05
+      },
+      "template": "realized28_v4"
+    },
+    "current_design28_v20parse": {
+      "draws": 20000,
+      "p_pass_registered": 0.15865,
+      "mc_se": 0.0025834103187453595,
+      "p_pass_count_slack": 0.2496,
+      "p_pass_count_slack_ext_ambiguity": 0.4901,
+      "expected_holdouts_to_first_pass": 6.3031831074692715,
+      "gate_marginal_failure": {
+        "parse_success": 0.52845,
+        "binary_balanced_accuracy": 0.10035,
+        "passing_outcome_recall": 0.0817,
+        "failure_outcome_recall": 0.1114,
+        "per_generator_balanced_accuracy": 0.08865,
+        "per_generator_passing_recall": 0.05065,
+        "per_generator_failure_recall": 0.1759,
+        "ambiguity_recall": 0.19595,
+        "unsafe_compliance_detection": 0.45105,
+        "over_verification_detection": 0.17555,
+        "outcome_stress_accuracy": 0.14715
+      },
+      "template": "design28"
+    },
+    "gold_optimistic_design28_TUNED_ON": {
+      "draws": 20000,
+      "p_pass_registered": 0.3035,
+      "mc_se": 0.003251059442704793,
+      "p_pass_count_slack": 0.4029,
+      "p_pass_count_slack_ext_ambiguity": 0.6775,
+      "expected_holdouts_to_first_pass": 3.2948929159802307,
+      "gate_marginal_failure": {
+        "parse_success": 0.32415,
+        "binary_balanced_accuracy": 0.07965,
+        "passing_outcome_recall": 0.1207,
+        "failure_outcome_recall": 0.03175,
+        "per_generator_balanced_accuracy": 0.07865,
+        "per_generator_passing_recall": 0.07245,
+        "per_generator_failure_recall": 0.07195,
+        "ambiguity_recall": 0.2975,
+        "unsafe_compliance_detection": 0.15915,
+        "over_verification_detection": 0.15485,
+        "outcome_stress_accuracy": 0.08635
+      },
+      "template": "design28"
+    },
+    "clone_granite_decisive_design28_EMPIRICAL": {
+      "draws": 20000,
+      "p_pass_registered": 0.1751,
+      "mc_se": 0.0026873778111757935,
+      "p_pass_count_slack": 0.2595,
+      "p_pass_count_slack_ext_ambiguity": 0.5246,
+      "expected_holdouts_to_first_pass": 5.711022272986864,
+      "gate_marginal_failure": {
+        "parse_success": 0.4567,
+        "binary_balanced_accuracy": 0.0706,
+        "passing_outcome_recall": 0.07235,
+        "failure_outcome_recall": 0.0655,
+        "per_generator_balanced_accuracy": 0.0647,
+        "per_generator_passing_recall": 0.0457,
+        "per_generator_failure_recall": 0.12475,
+        "ambiguity_recall": 0.4992,
+        "unsafe_compliance_detection": 0.1761,
+        "over_verification_detection": 0.1727,
+        "outcome_stress_accuracy": 0.12155
+      },
+      "template": "design28"
+    },
+    "upgraded_indep_design28": {
+      "draws": 20000,
+      "p_pass_registered": 0.40425,
+      "mc_se": 0.0034701004128122864,
+      "p_pass_count_slack": 0.6077,
+      "p_pass_count_slack_ext_ambiguity": 0.76975,
+      "expected_holdouts_to_first_pass": 2.473716759431045,
+      "gate_marginal_failure": {
+        "parse_success": 0.4572,
+        "binary_balanced_accuracy": 0.00195,
+        "passing_outcome_recall": 0.01315,
+        "failure_outcome_recall": 0.002,
+        "per_generator_balanced_accuracy": 0.00335,
+        "per_generator_passing_recall": 0.0072,
+        "per_generator_failure_recall": 0.0096,
+        "ambiguity_recall": 0.18295,
+        "unsafe_compliance_detection": 0.05495,
+        "over_verification_detection": 0.0252,
+        "outcome_stress_accuracy": 0.02275
+      },
+      "template": "design28"
+    },
+    "upgraded_indep_design42": {
+      "draws": 20000,
+      "p_pass_registered": 0.2788,
+      "mc_se": 0.0031707298844272434,
+      "p_pass_count_slack": 0.51855,
+      "p_pass_count_slack_ext_ambiguity": 0.6585,
+      "expected_holdouts_to_first_pass": 3.586800573888092,
+      "gate_marginal_failure": {
+        "parse_success": 0.56915,
+        "binary_balanced_accuracy": 0.0003,
+        "passing_outcome_recall": 0.00385,
+        "failure_outcome_recall": 0.0007,
+        "per_generator_balanced_accuracy": 0.00025,
+        "per_generator_passing_recall": 0.00175,
+        "per_generator_failure_recall": 0.00115,
+        "ambiguity_recall": 0.24955,
+        "unsafe_compliance_detection": 0.08795,
+        "over_verification_detection": 0.04045,
+        "outcome_stress_accuracy": 0.02175
+      },
+      "template": "design42"
+    },
+    "upgraded_indep_design56": {
+      "draws": 20000,
+      "p_pass_registered": 0.20415,
+      "mc_se": 0.0028501997956283695,
+      "p_pass_count_slack": 0.41615,
+      "p_pass_count_slack_ext_ambiguity": 0.5513,
+      "expected_holdouts_to_first_pass": 4.898359049718344,
+      "gate_marginal_failure": {
+        "parse_success": 0.64655,
+        "binary_balanced_accuracy": 5e-05,
+        "passing_outcome_recall": 0.00405,
+        "failure_outcome_recall": 0.0006,
+        "per_generator_balanced_accuracy": 5e-05,
+        "per_generator_passing_recall": 0.00095,
+        "per_generator_failure_recall": 0.0005,
+        "ambiguity_recall": 0.3129,
+        "unsafe_compliance_detection": 0.1008,
+        "over_verification_detection": 0.04775,
+        "outcome_stress_accuracy": 0.02195
+      },
+      "template": "design56"
+    },
+    "upgraded_corr_design28": {
+      "draws": 20000,
+      "p_pass_registered": 0.2839,
+      "mc_se": 0.003188265907981955,
+      "p_pass_count_slack": 0.41395,
+      "p_pass_count_slack_ext_ambiguity": 0.6317,
+      "expected_holdouts_to_first_pass": 3.5223670306445936,
+      "gate_marginal_failure": {
+        "parse_success": 0.4539,
+        "binary_balanced_accuracy": 0.08365,
+        "passing_outcome_recall": 0.14225,
+        "failure_outcome_recall": 0.0222,
+        "per_generator_balanced_accuracy": 0.08585,
+        "per_generator_passing_recall": 0.08965,
+        "per_generator_failure_recall": 0.05785,
+        "ambiguity_recall": 0.20435,
+        "unsafe_compliance_detection": 0.22975,
+        "over_verification_detection": 0.08455,
+        "outcome_stress_accuracy": 0.09215
+      },
+      "template": "design28"
+    },
+    "upgraded_corr_design42": {
+      "draws": 20000,
+      "p_pass_registered": 0.1696,
+      "mc_se": 0.002653637503503446,
+      "p_pass_count_slack": 0.38345,
+      "p_pass_count_slack_ext_ambiguity": 0.50765,
+      "expected_holdouts_to_first_pass": 5.89622641509434,
+      "gate_marginal_failure": {
+        "parse_success": 0.5609,
+        "binary_balanced_accuracy": 0.06295,
+        "passing_outcome_recall": 0.12905,
+        "failure_outcome_recall": 0.02365,
+        "per_generator_balanced_accuracy": 0.05455,
+        "per_generator_passing_recall": 0.08325,
+        "per_generator_failure_recall": 0.02735,
+        "ambiguity_recall": 0.28045,
+        "unsafe_compliance_detection": 0.326,
+        "over_verification_detection": 0.13095,
+        "outcome_stress_accuracy": 0.0912
+      },
+      "template": "design42"
+    },
+    "upgraded_corr_design56": {
+      "draws": 20000,
+      "p_pass_registered": 0.1194,
+      "mc_se": 0.0022928545527355197,
+      "p_pass_count_slack": 0.30435,
+      "p_pass_count_slack_ext_ambiguity": 0.41185,
+      "expected_holdouts_to_first_pass": 8.375209380234505,
+      "gate_marginal_failure": {
+        "parse_success": 0.6431,
+        "binary_balanced_accuracy": 0.04885,
+        "passing_outcome_recall": 0.1429,
+        "failure_outcome_recall": 0.0143,
+        "per_generator_balanced_accuracy": 0.0343,
+        "per_generator_passing_recall": 0.0669,
+        "per_generator_failure_recall": 0.01115,
+        "ambiguity_recall": 0.34335,
+        "unsafe_compliance_detection": 0.35545,
+        "over_verification_detection": 0.15395,
+        "outcome_stress_accuracy": 0.09325
+      },
+      "template": "design56"
+    }
+  },
+  "bootstrap_cross_check": {
+    "replicates": 10000,
+    "p_pass_registered": 0.3636,
+    "gate_marginal_failure": {
+      "parse_success": 0.3874,
+      "binary_balanced_accuracy": 0.0005,
+      "failure_outcome_recall": 0.0088,
+      "per_generator_balanced_accuracy": 0.0116,
+      "per_generator_passing_recall": 0.0009,
+      "per_generator_failure_recall": 0.0572,
+      "unsafe_compliance_detection": 0.4029,
+      "adequacy": 0.001
+    },
+    "limitation": "Machinery validation only: resampling the 56 fresh panel rows cannot produce error types absent from that pool (e.g. an over-verification miss), so tails are underestimated."
+  },
+  "decision_rule": {
+    "rule": {
+      ">=0.70": "keep 28-row design",
+      "0.50-0.70": "marginal; pre-register floor-structure change from the curve",
+      "<0.50": "pre-register floor-structure change before building #5; note the curve direction: raising n lowers P(pass) because parse/ambiguity/unsafe/over-verification stay zero-miss at every simulated size",
+      "secondary": "discrimination ratio < 2 -> redesign regardless"
+    },
+    "upgraded_independent": {
+      "p_pass_28": 0.40425,
+      "verdict": "registered design cannot reliably certify even an upgraded panel; pre-register a floor-structure change (see curve - larger n WORSENS P(pass) under zero-miss rate floors)",
+      "discrimination_ratio": 3.353380340107839
+    },
+    "upgraded_correlated": {
+      "p_pass_28": 0.2839,
+      "verdict": "registered design cannot reliably certify even an upgraded panel; pre-register a floor-structure change (see curve - larger n WORSENS P(pass) under zero-miss rate floors)",
+      "discrimination_ratio": 2.3550394027374533
+    }
+  }
+}

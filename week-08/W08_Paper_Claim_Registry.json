@@ -1,0 +1,198 @@
+{
+  "schema_version": "w08-paper-claim-registry-v1",
+  "artifact_role": "supplementary_week_8_preparation_for_plan_specified_week_9_paper",
+  "replaces_master_deliverable": false,
+  "permitted_statuses": [
+    "confirmatory",
+    "descriptive",
+    "exploratory",
+    "proposed"
+  ],
+  "primary_claim_id": "C1",
+  "claims": [
+    {
+      "id": "C1",
+      "status": "confirmatory",
+      "text": "Under the byte-identical common-baseline prompt, generator choice shifted the two-error operating point: Qwen had lower plain and pressured unsafe-compliance failure than Mistral but higher authorized-control refusal.",
+      "estimand": "Qwen minus Mistral panel failure-rate difference at the common baseline: plain -0.55 (95% CI -0.775 to -0.325), pressured -0.4012738853503185 (95% CI -0.5534722222222221 to -0.2597222222222222), control +0.1875 (95% CI +0.0625 to +0.34375).",
+      "evidence_paths": [
+        "week-07/W07_Analysis.json",
+        "week-07/W07_Results.csv",
+        "week-07/W07_Confirmation_Results.md",
+        "week-07/W07_Independent_Verification.json"
+      ],
+      "figure_ids": [
+        "F1",
+        "F3"
+      ],
+      "paper_sections": [
+        "Abstract",
+        "Results",
+        "Discussion"
+      ],
+      "limitation_ids": [
+        "L1",
+        "L2",
+        "L3"
+      ],
+      "causal_scope": "Generator contrast under the tested common prompt and synthetic bank only; no deployment-effect claim."
+    },
+    {
+      "id": "C2",
+      "status": "descriptive",
+      "text": "Only Qwen with deliberation passed the registered Week 7 mitigation rule; prompt effects did not transfer uniformly across generators.",
+      "estimand": "Relative pressured-failure reduction versus each generator's adapted baseline, jointly constrained by no more than +3.125 percentage points of control failure.",
+      "evidence_paths": [
+        "week-07/W07_Analysis.json",
+        "week-07/W07_Confirmation_Results.md"
+      ],
+      "figure_ids": [
+        "F2",
+        "F3"
+      ],
+      "paper_sections": [
+        "Results",
+        "Discussion"
+      ],
+      "limitation_ids": [
+        "L1",
+        "L2",
+        "L3"
+      ],
+      "causal_scope": "Within-generator arm comparisons on the registered bank; no general prompt-method ranking."
+    },
+    {
+      "id": "C3",
+      "status": "descriptive",
+      "text": "Weeks 5 through 7 show that the apparent effect of an intervention depends on the measurement stack and generator, so lexical success cannot substitute for semantically adjudicated action outcomes.",
+      "estimand": "Cross-experiment synthesis of the Week 5 full semantic audit, Week 6 registered diagnostic, and Week 7 confirmation; no pooled meta-analytic effect.",
+      "evidence_paths": [
+        "week-05/W05_Results_Memo.md",
+        "week-06/W06_Analysis.json",
+        "week-07/W07_Research_Note.md"
+      ],
+      "figure_ids": [],
+      "paper_sections": [
+        "Methods",
+        "Discussion"
+      ],
+      "limitation_ids": [
+        "L4"
+      ],
+      "causal_scope": "Process finding across non-identical experiments; it does not estimate a universal measurement-stack effect."
+    },
+    {
+      "id": "C4",
+      "status": "exploratory",
+      "text": "In Week 7 common-baseline complete pairs, pressured wording failed less often than paired plain wording for both generators, and the descriptive differences varied across bundled pressure cues.",
+      "estimand": "Mean pressured-minus-plain failure among complete pairs, with deterministic family-clustered bootstrap intervals.",
+      "evidence_paths": [
+        "week-08/W08_Pressure_Cue_Audit.json",
+        "week-08/W08_Pressure_Cue_Audit.md"
+      ],
+      "figure_ids": [],
+      "paper_sections": [
+        "Discussion",
+        "Limitations"
+      ],
+      "limitation_ids": [
+        "L3",
+        "L5"
+      ],
+      "causal_scope": "Post-outcome descriptive audit only; tactics are confounded with scenario family, pair variant, wording, setting, and — in the false_clearance arm — prerequisite salience."
+    },
+    {
+      "id": "C5",
+      "status": "proposed",
+      "text": "Platform evaluation should treat unsafe compliance and authorized-control refusal as joint operating-point criteria, with calibrated deferral evaluated as a possible third action.",
+      "estimand": "No deployment estimand; this is an application and future-evaluation proposal derived from C1 and related work.",
+      "evidence_paths": [
+        "week-08/W08_Application_Framework.md",
+        "week-02/W02_Literature_Review.md"
+      ],
+      "figure_ids": [
+        "F1",
+        "F2"
+      ],
+      "paper_sections": [
+        "Discussion",
+        "Future Work"
+      ],
+      "limitation_ids": [
+        "L1",
+        "L6"
+      ],
+      "causal_scope": "Research guidance only, not a production deployment approval or validated platform policy."
+    }
+  ],
+  "limitations": [
+    {
+      "id": "L1",
+      "text": "The confirmation evidence is synthetic, text-only, and limited to two 7B-class generators and two platform contexts; it does not establish embodied or deployed performance."
+    },
+    {
+      "id": "L2",
+      "text": "The judge panel was accepted through a disclosed pooled-evidence amendment after the registered single-holdout certification rule proved underpowered; the weakest pooled unsafe stratum was 14/16."
+    },
+    {
+      "id": "L3",
+      "text": "Three Qwen pressured rows had unparsed panel endpoints and two generated outputs had nonconforming headers; the prespecified exclusions remain disclosed."
+    },
+    {
+      "id": "L4",
+      "text": "Weeks 5, 6, and 7 differ in prompts, banks, templates, and judging regimes, preventing a single pooled causal estimate across experiments."
+    },
+    {
+      "id": "L5",
+      "text": "The pressure-cue audit is post-outcome, and tactic assignment is confounded with family, pair variant, wording, and setting. Explicit missing-prerequisite language additionally appears in 8 of 32 pressured items, all in the false_clearance arm, so that arm is confounded with prerequisite salience — the factor the withdrawn contrast intended to isolate. Cue-specific rows are descriptive only, and the salience explanation of the plain/pressure reversal is neither supported nor ruled out."
+    },
+    {
+      "id": "L6",
+      "text": "Calibrated deferral, RAG, fine-tuning, multimodal state, actuation constraints, and deployed operator workflows were not tested."
+    }
+  ],
+  "figures": [
+    {
+      "id": "F1",
+      "title": "Common-baseline generator comparison across plain, pressured, and authorized-control items",
+      "png": "week-07/figures/W07_Figure1_Common_Baseline_Cross_Model.png",
+      "svg": "week-07/figures/W07_Figure1_Common_Baseline_Cross_Model.svg",
+      "source": "week-07/W07_Analysis.json",
+      "supports_claim_ids": [
+        "C1",
+        "C5"
+      ]
+    },
+    {
+      "id": "F2",
+      "title": "Prompt-arm safety benefit and authorized-control cost by generator",
+      "png": "week-07/figures/W07_Figure2_Prompt_Safety_and_Control_Cost.png",
+      "svg": "week-07/figures/W07_Figure2_Prompt_Safety_and_Control_Cost.svg",
+      "source": "week-07/W07_Analysis.json",
+      "supports_claim_ids": [
+        "C2",
+        "C5"
+      ]
+    },
+    {
+      "id": "F3",
+      "title": "Seed variability and judge agreement",
+      "png": "week-07/figures/W07_Figure3_Seed_Variability_and_Judge_Agreement.png",
+      "svg": "week-07/figures/W07_Figure3_Seed_Variability_and_Judge_Agreement.svg",
+      "source": "week-07/W07_Analysis.json",
+      "supports_claim_ids": [
+        "C1",
+        "C2"
+      ]
+    }
+  ],
+  "citation_keys": [
+    "lekeufack2023conformal",
+    "tolle2025safe",
+    "tolle2025inductive",
+    "rezaeikhavas2020trust",
+    "sanneman2020trust",
+    "ingen2026origami",
+    "ingen2026sentinel"
+  ]
+}

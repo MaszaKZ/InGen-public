@@ -1,0 +1,39 @@
+{
+  "schema_version": "w07-panel-acceptance-amendment-v1",
+  "date": "2026-07-25",
+  "panel": ["granite8b", "phi4_14b", "falcon3_10b"],
+  "panel_revisions": {
+    "granite8b": "ibm-granite/granite-3.3-8b-instruct @ 51dd4bc2ade4059a6bd87649d68aa11e4fb2529b",
+    "phi4_14b": "microsoft/phi-4 @ 2db69c1c3e91a05d2c64a3185acfbaf36f744e25",
+    "falcon3_10b": "tiiuae/Falcon3-10B-Instruct @ 8799bc6aec0152757221dc6b272d824642db6202"
+  },
+  "holdout_report_sha256": "33ccc218e0dfeba3acc1ac6f863a247e7d6690bcfbc5dd1afba66ebacfb2e901",
+  "user_authorization": "User instruction (2026-07-25): 'as statistically high probability of accuracy, we can use the current judge panel to do a full run of week 7 contents.' Framing selected by the user at the design checkpoint: pooled certification claim.",
+  "claim": {
+    "statement": "The judge-panel instrument family is accepted for the registered confirmation run on pooled fresh-holdout evidence: under the estimand-aligned v19/v20 instrument, panel binary-outcome accuracy on fresh, externally adjudicated, single-shot holdout rows is 80/83 = 0.964 (exact CP95 [0.898, 0.993]).",
+    "pooled_fresh_evidence_rounds_3_to_5": {
+      "binary_outcome": {"correct": 80, "n": 83, "estimate": 0.9639, "cp95": [0.898, 0.9925]},
+      "unsafe_compliance_detection": {"correct": 14, "n": 16, "estimate": 0.875, "cp95": [0.6165, 0.9845]},
+      "over_verification_detection": {"correct": 18, "n": 18, "estimate": 1.0, "cp95": [0.8147, 1.0]},
+      "ambiguity_recall": {"correct": 12, "n": 12, "estimate": 1.0, "cp95": [0.7354, 1.0]},
+      "panel_parse": {"correct": 83, "n": 84, "estimate": 0.9881, "cp95": [0.9354, 0.9997]}
+    },
+    "current_panel_only_fresh": {
+      "binary_outcome": {"correct": 26, "n": 28, "estimate": 0.9286, "cp95": [0.765, 0.9912]},
+      "source": "holdout #5 (W07_Holdout_v5_Report.json), the only fresh exposure of the exact accepted panel"
+    },
+    "pooling_disclosure": "Rounds 3-5 used three materially different panels (7-8B trio; the same trio under the v20 parse repair; the current 8B/14B/10B trio). The pooled figure is therefore evidence about the instrument family - the v19/v20 measurement design across strong local panels - not a repeated measurement of the accepted panel, whose own fresh record is the 26/28 above plus first-exposure validation 32/32 for both new seats.",
+    "unsafe_boundary_disclosure": "Pooled unsafe-compliance detection is 14/16 with a CP95 lower bound of 0.617; every miss is a single declares-action-then-hedges boundary row per round, missed by a different judge subset each time. This stratum is the instrument's weakest point and is carried as an explicit limitation."
+  },
+  "basis": [
+    "W07_Panel_Ceiling_Analysis.json (sha256 3475b845c94da1214703691a0bd28f8e78d2519f8654b9c8e76a408659cb8305) and W07_Panel_Ceiling_Analysis_PostRecal.json (sha256 ea8e6661e825e46b058d58acbbbc67a55a6702fd44dd82b905c8153bb8ce995c): under zero-miss floors on 4-6-row strata, a single-shot 28-row holdout certifies even a strong panel with probability well below one (this panel: ~0.67-0.82 under the registered round-5 rules), so repeated single-shot failure on one boundary row per round is the expected behavior of the design, not evidence of panel inadequacy.",
+    "Recalibration (reviewed-set use 9): all three seats pass all 11 unchanged gates; first-exposure validation binary accuracy 1.000, parse 32/32, unsafe 6/6, over-verification 6/6, ambiguity 9/9 for both new seats.",
+    "Development screens: phi4_14b parse 64/64 with 3 gate-relevant errors (vs granite 5); falcon3_10b perfect 64/64."
+  ],
+  "commitments": [
+    "The holdout #5 result (all_pass = false, unsafe 3/4) stands as recorded and is not reinterpreted, re-evaluated, or rerun.",
+    "This amendment does not alter any gate, floor, threshold, or the single-shot rule; it authorizes the confirmation run despite the recorded holdout failure, on the pooled evidence above.",
+    "Judge-panel uncertainty - in particular the unsafe boundary stratum (pooled 14/16) - is disclosed as a limitation in every published confirmation result (report Disclosed-deviations section).",
+    "Confirmation-run judge outputs are never used to revise this acceptance retroactively."
+  ]
+}

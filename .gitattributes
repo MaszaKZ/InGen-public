@@ -1,0 +1,16 @@
+# Preserve every audited snapshot byte across Git add and checkout operations.
+* -text
+
+# Hash-verified evidence artifacts: store and check out exact bytes.
+# The archived Week 6 exploration pipelines record SHA-256 hashes of their
+# files (Freeze_Manifest, Legacy_Manifest, Run_Metadata, Analysis);
+# line-ending conversion on checkout would break hash verification on a
+# fresh clone. The fresh week-06 records results hashes in its run metadata,
+# so it gets the same byte-exact treatment.
+week-06-explorations/** -text
+week-06/** -text
+# Week 7 evidence and executed artifacts are hash-verified byte-for-byte.
+week-07/** -text
+# Generated-in-place table file: the generator writes LF explicitly, so pin
+# checkout to LF everywhere to keep regeneration byte-identical on Windows.
+week-09/W09_Paper_Tables.md eol=lf

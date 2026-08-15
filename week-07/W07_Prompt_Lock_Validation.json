@@ -1,0 +1,28 @@
+{
+  "schema_version": "w07-prompt-lock-validation-v1",
+  "status": "pass",
+  "checks": {
+    "ten_candidates_explicitly_decided": true,
+    "accepted_candidate_count": 6,
+    "rejected_candidate_count": 4,
+    "one_event_per_accepted_model_condition": true,
+    "common_baseline_byte_identical_before_native_chat": true,
+    "qwen_adapted_and_deliberation_unchanged": true,
+    "only_intended_six_model_condition_messages_changed": true,
+    "shared_structured_authorization_task_removed": true,
+    "shared_constraint_gate_bidirectional": true,
+    "mistral_direct_narrator_check_applied": true,
+    "no_second_preflight_permitted": true,
+    "prompt_and_judge_scripts_compile": true
+  },
+  "hashes": {
+    "raw_outputs_sha256": "16443b67f28e7c6e631fe95318962192e7e7b260e495a284a80064858e131a40",
+    "prompt_before_sha256": "dd4b8a4fb4eb17aa845a3710343af25589a9dab770db1c910d5b9e483faeb592",
+    "prompt_after_sha256": "78913b286b6319cd3eac8ac805a51f53668d18a181cfee3b023fcfbc76bd5970",
+    "correction_record_sha256": "8e5ed163dd154cfc01ac90fcfe24e411bf5060d367f23ef7345652ac238e5bbb",
+    "message_comparison_sha256": "9ed58788b2e4a5f6b6d509f744c6cd33ddfd716d7eae8562440ecb520214567c"
+  },
+  "limitations": [
+    "The repository's full w07_common.py and unit-test suite were not included in the uploaded bundle, so repository-level integration tests could not be executed here."
+  ]
+}
