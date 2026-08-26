@@ -18,7 +18,7 @@ from pathlib import Path, PurePosixPath
 from urllib.parse import unquote
 
 
-SOURCE_COMMIT = "3a6441757574dea21093510f6a3786c95ee92009"
+SOURCE_COMMIT = "1989f335c7562b8f74444286ebc26c317bfe5024"
 PROVENANCE_SCHEMA = "ingen-public-snapshot-v1"
 EXPORT_SCHEMA = "ingen-public-export-v1"
 DATA_SCHEMA = "w10-data-manifest-public-v1"
@@ -47,6 +47,7 @@ TRANSFORMED_PATHS = (
     "week-10/W10_Reproducibility_Package/test_reproduce_fresh.py",
     "week-10/Wk-10-ResearchLog.md",
     "week-10/verify_w10.py",
+    "week-11/build_w11_deck.mjs",
 )
 
 MIT_LICENSE = """MIT License
@@ -203,7 +204,7 @@ def _forbidden_literals() -> tuple[bytes, ...]:
     )
 
 
-TEXT_SUFFIXES = {"", ".bib", ".csv", ".gitignore", ".json", ".jsonl", ".md", ".py", ".tex", ".txt"}
+TEXT_SUFFIXES = {"", ".bib", ".csv", ".gitignore", ".json", ".jsonl", ".md", ".mjs", ".ps1", ".py", ".tex", ".txt"}
 
 
 def scan_public_bytes(root: Path, inventory: dict[str, str]) -> None:
@@ -237,8 +238,16 @@ def scan_public_bytes(root: Path, inventory: dict[str, str]) -> None:
 
 def verify_markdown_links(root: Path, inventory: dict[str, str]) -> None:
     link_pattern = re.compile(r"\[[^\]]*\]\(([^)\n]+)\)")
+    # The Week 11 package's source/ subtree holds verbatim, hash-pinned copies
+    # of admitted evidence documents; their relative links target the original
+    # repository layout, and rewriting them would break the package manifest.
+    verbatim_snapshot_prefix = "week-11/W11_Reproducibility_Package/source/"
     root = root.resolve(strict=True)
-    for relative in sorted(path for path in inventory if path.endswith(".md")):
+    for relative in sorted(
+        path
+        for path in inventory
+        if path.endswith(".md") and not path.startswith(verbatim_snapshot_prefix)
+    ):
         text = (root / relative).read_text(encoding="utf-8")
         for match in link_pattern.finditer(text):
             raw_target = match.group(1).strip()
@@ -410,6 +419,11 @@ def verify_document_structure(root: Path) -> None:
     pairs = (
         ("week-09/W09_Paper_Draft_v1_IEEE.tex", "output/pdf/W09_Paper_Draft_v1_IEEE.pdf"),
         ("week-10/W10_Paper_Draft_v2_IEEE.tex", "output/pdf/W10_Paper_Draft_v2_IEEE.pdf"),
+        ("week-11/W11_Capstone_Report.tex", "week-11/W11_Capstone_Report.pdf"),
+        (
+            "week-11/W11_Reproducibility_Package/artifacts/report/Capstone_Report.tex",
+            "week-11/W11_Reproducibility_Package/artifacts/report/Capstone_Report.pdf",
+        ),
     )
     for tex_relative, pdf_relative in pairs:
         try:
@@ -553,6 +567,25 @@ def run_public_commands(root: Path) -> tuple[CommandResult, ...]:
                 "week-10/W10_Reproducibility_Package",
                 "-p",
                 "test_*.py",
+            ),
+            cwd=harness,
+            env=env,
+        )
+        commands.append(result)
+        result, _ = _run_checked(
+            "w11_verify_package",
+            (python, "week-11/W11_Reproducibility_Package/verify_package.py"),
+            cwd=harness,
+            env=env,
+        )
+        commands.append(result)
+        result, _ = _run_checked(
+            "w11_acceptance",
+            (
+                python,
+                "week-11/W11_Reproducibility_Package/run_acceptance.py",
+                "--model-policy",
+                "allow-missing",
             ),
             cwd=harness,
             env=env,

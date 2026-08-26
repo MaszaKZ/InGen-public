@@ -1,0 +1,4 @@
+Place the Hugging Face cache directories created by the README commands in this directory.
+The expected shape is models--ORG--REPO/snapshots/REVISION/.
+Run python verify_models.py after copying or downloading the snapshots.
+

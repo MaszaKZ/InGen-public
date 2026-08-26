@@ -1,0 +1,52 @@
+{
+  "mistral:common_baseline": {
+    "message_equal": true,
+    "before_sha256": "88484a37ac861a3fab8bad47aafd7b932c193f9f81ce12e6d4f062b0faf2d670",
+    "after_sha256": "88484a37ac861a3fab8bad47aafd7b932c193f9f81ce12e6d4f062b0faf2d670"
+  },
+  "mistral:adapted_baseline": {
+    "message_equal": false,
+    "before_sha256": "67d20f1029eed7a1654cb5e747601027636adb26c4bc33af9b244c31cdbbab5d",
+    "after_sha256": "febc02f3a95f7b641a48dfdcc12deb8058e5ccdd242b1a57b7ea589c67c71072"
+  },
+  "mistral:deliberation": {
+    "message_equal": false,
+    "before_sha256": "df8f758fc3bce2f2bfbc6c3a525e7ba6c22ab4eb76fb82daa0edc6becf91dbd4",
+    "after_sha256": "ce21807135c4f366ac029ea9918333e21b55aaac3737c69929197b2258ae6d89"
+  },
+  "mistral:structured_output": {
+    "message_equal": false,
+    "before_sha256": "7c3db3f33fee4e2212141ae339883c14bd064bd0178a8d4665998bd353ad9ec8",
+    "after_sha256": "7cd3baccf7573f0dab6f6ead69bf7287ce0a95f1afc02f7af8ec3e09e7793434"
+  },
+  "mistral:constraint_gated": {
+    "message_equal": false,
+    "before_sha256": "bddfda3bb9a39b987b0e289a6d38575b13381568ad2850fb56151d9c7f37c431",
+    "after_sha256": "0847009c55930caafc2b81d26a35fbbccdab7d7ab3661347322657054f6dfbd8"
+  },
+  "qwen:common_baseline": {
+    "message_equal": true,
+    "before_sha256": "88484a37ac861a3fab8bad47aafd7b932c193f9f81ce12e6d4f062b0faf2d670",
+    "after_sha256": "88484a37ac861a3fab8bad47aafd7b932c193f9f81ce12e6d4f062b0faf2d670"
+  },
+  "qwen:adapted_baseline": {
+    "message_equal": true,
+    "before_sha256": "08cc4716a4b9ec7970182e02024a1531074e142b339e9de610ed77bde69641a4",
+    "after_sha256": "08cc4716a4b9ec7970182e02024a1531074e142b339e9de610ed77bde69641a4"
+  },
+  "qwen:deliberation": {
+    "message_equal": true,
+    "before_sha256": "6af14fce7881858bdaf01512912e26745686e8d5cdc714c81094fb326ed0cf94",
+    "after_sha256": "6af14fce7881858bdaf01512912e26745686e8d5cdc714c81094fb326ed0cf94"
+  },
+  "qwen:structured_output": {
+    "message_equal": false,
+    "before_sha256": "af85f5f12308c4ed8a1771482ccdc8f383d6f2bb1399ea05592857faf6cbf826",
+    "after_sha256": "0eec3e450406e03b7eb9d1e15a1caf193fd6b8b113a5e0bec421adb4507b711e"
+  },
+  "qwen:constraint_gated": {
+    "message_equal": false,
+    "before_sha256": "35b19753ca39480b370de9e722bf1f75156934e0cda789e5a2fcc58042ab469b",
+    "after_sha256": "29d47c36237a02bd66a245124c840cf7981788890c25f27d5b0be59067928aa2"
+  }
+}

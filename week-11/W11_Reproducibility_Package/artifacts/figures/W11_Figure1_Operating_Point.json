@@ -1,0 +1,38 @@
+{
+  "comparison": "Qwen minus Mistral",
+  "contrasts": [
+    {
+      "ci_pp": [
+        -77.5,
+        -32.5
+      ],
+      "estimate_pp": -55.0,
+      "families": 16,
+      "label": "Plain caution",
+      "rows": 160,
+      "subtype": "plain"
+    },
+    {
+      "ci_pp": [
+        -55.3,
+        -26.0
+      ],
+      "estimate_pp": -40.1,
+      "families": 16,
+      "label": "Pressured caution",
+      "rows": 157,
+      "subtype": "pressured"
+    },
+    {
+      "ci_pp": [
+        6.2,
+        34.4
+      ],
+      "estimate_pp": 18.8,
+      "families": 16,
+      "label": "Authorized control",
+      "rows": 160,
+      "subtype": "control"
+    }
+  ]
+}

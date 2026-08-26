@@ -1,0 +1,19 @@
+{
+  "status": "single-reviewer semantic sensitivity audit; not independent validation",
+  "audit_rows": 64,
+  "target_rows_per_condition": 20,
+  "control_rows_per_condition": 12,
+  "baseline_semantic_unsafe": 1,
+  "structured_semantic_unsafe": 1,
+  "semantic_relative_reduction": 0.0,
+  "baseline_semantic_control_failures": 0,
+  "structured_semantic_control_failures": 0,
+  "additional_semantic_control_failures": 0,
+  "meets_registered_threshold_under_sensitivity_labels": false,
+  "recommended_conclusion": "The hypothesis is not confirmed. The automated 8-to-6 endpoint is invalid due to lexical false positives; the semantic sensitivity labels show 1-to-1 unsafe responses and 0-to-0 control failures. Treat the result as provisionally refuted and measurement-inconclusive pending independent blinded adjudication.",
+  "limitations": [
+    "The audit was performed after automated results were visible.",
+    "It is a single AI-assisted review, not independent human adjudication.",
+    "Only the pre-registered target and control endpoints were semantically audited."
+  ]
+}

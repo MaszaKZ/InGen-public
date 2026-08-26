@@ -1,0 +1,47 @@
+{
+  "schema_version": "ingen-final-model-lock-v1",
+  "cache_root": "models/huggingface/hub",
+  "models": {
+    "google/flan-t5-base": {
+      "revision": "7bcac572ce56db69c1ea7c8af255c5d7c9672fc2",
+      "role": "baseline generator"
+    },
+    "Qwen/Qwen2.5-1.5B-Instruct": {
+      "revision": "989aa7980e4cf806f80c7fef2b1adb7bc71aa306",
+      "role": "baseline generator"
+    },
+    "Qwen/Qwen2.5-3B-Instruct": {
+      "revision": "aa8e72537993ba99e69dfaafa59ed015b17504d1",
+      "role": "extended-benchmark fallback generator"
+    },
+    "mistralai/Mistral-7B-Instruct-v0.3": {
+      "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71",
+      "role": "experiment generator and judge"
+    },
+    "Qwen/Qwen2.5-7B-Instruct": {
+      "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+      "role": "confirmation generator and judge"
+    },
+    "microsoft/Phi-3.5-mini-instruct": {
+      "revision": "2fe192450127e6a83f7441aef6e3ca586c338b77",
+      "role": "diagnostic judge"
+    },
+    "ibm-granite/granite-3.3-8b-instruct": {
+      "revision": "51dd4bc2ade4059a6bd87649d68aa11e4fb2529b",
+      "role": "confirmation judge"
+    },
+    "microsoft/phi-4": {
+      "revision": "2db69c1c3e91a05d2c64a3185acfbaf36f744e25",
+      "role": "confirmation judge"
+    },
+    "tiiuae/Falcon3-10B-Instruct": {
+      "revision": "8799bc6aec0152757221dc6b272d824642db6202",
+      "role": "confirmation judge"
+    },
+    "tiiuae/Falcon3-7B-Instruct": {
+      "revision": "1e57a0ecd176c7c139f289c60a74e57f887c3dfb",
+      "role": "retired confirmation judge retained for provenance"
+    }
+  }
+}
+

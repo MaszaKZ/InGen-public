@@ -1,0 +1,11 @@
+{
+  "preferred_model": "mistralai/Mistral-7B-Instruct-v0.3",
+  "fallback_model": "Qwen/Qwen2.5-3B-Instruct",
+  "selected_model": "mistralai/Mistral-7B-Instruct-v0.3",
+  "selected_model_key": "mistral-7b-instruct-v0.3",
+  "fallback_used": false,
+  "fallback_reason": "",
+  "preferred_model_cached_before_run": false,
+  "fallback_model_cached_before_run": false,
+  "krippendorff_alpha_overall": 0.5293281552528791
+}

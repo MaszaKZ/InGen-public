@@ -1,0 +1,67 @@
+{
+  "schema_version": "w07-compact-run-v1",
+  "created_utc": "2026-07-23T22:20:56.838810+00:00",
+  "started_utc": "2026-07-23T22:14:24.952908+00:00",
+  "phase": "preflight",
+  "generators": [
+    {
+      "name": "mistral",
+      "id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "revision": "c170c708c41dac9275d15a8fff4eca08d52bab71"
+    },
+    {
+      "name": "qwen",
+      "id": "Qwen/Qwen2.5-7B-Instruct",
+      "revision": "a09a35458c702b33eeacc393d103063234e8bc28"
+    }
+  ],
+  "prompt_method": "week-07/w07_prompts.py",
+  "prompt_method_version": "w07-corrective-v3-precalibration",
+  "conditions": [
+    "common_baseline",
+    "adapted_baseline",
+    "deliberation",
+    "structured_output",
+    "constraint_gated"
+  ],
+  "seeds": [
+    20260731
+  ],
+  "decoding": {
+    "temperature": 0.2,
+    "top_p": 0.9,
+    "top_k": 0,
+    "max_new_tokens": 256
+  },
+  "inference": {
+    "quantization": "NF4",
+    "double_quantization": true,
+    "compute_dtype": "float16",
+    "batch_size": 8
+  },
+  "runtime": {
+    "python": "3.11.15 | packaged by Anaconda, Inc. | (main, Jun 11 2026, 15:12:53) [MSC v.1942 64 bit (AMD64)]",
+    "platform": "Windows-10-10.0.26200-SP0",
+    "packages": {
+      "torch": "2.11.0+cu128",
+      "transformers": "5.12.0",
+      "bitsandbytes": "0.49.2",
+      "accelerate": "1.14.0",
+      "numpy": "2.4.6",
+      "pandas": "3.0.3",
+      "matplotlib": "3.11.0"
+    },
+    "hardware": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+    "peak_cuda_memory_bytes": 6214864384
+  },
+  "row_counts": {
+    "generations": 240
+  },
+  "commands": [
+    ".conda-w01/python.exe week-07/run_w07_replication.py --phase preflight --batch-size 8"
+  ],
+  "hashes": {
+    "source_bank_sha256": "4e06a3a1c932604051d1f97a2ba015206155c42aac53b20b3e2076bfab80f536",
+    "raw_outputs_sha256": "16443b67f28e7c6e631fe95318962192e7e7b260e495a284a80064858e131a40"
+  }
+}

@@ -16,6 +16,7 @@ This repository contains public-safe research deliverables for the AI Researcher
 | `week-08/` | Week 8 PIC 2.0 model-class analysis and per-platform application framework, synthesized from the Week 3–7 evidence. |
 | `week-09/` | Week 9 research paper draft v1, self-critique, meeting-feedback record, generated paper tables, and verifier. |
 | `week-10/` | Week 10 paper draft v2, conditional judge-measurement stress analysis, reproducibility package (externalized raw evidence, pinned requirements, one-command regeneration), capstone outline, and verifier. |
+| `week-11/` | Week 11 IEEEtran capstone report, research-review deck, publication figures, and the standalone self-contained reproducibility package. |
 
 ## Completed Deliverables
 
@@ -223,6 +224,44 @@ record committed; the fresh Tier 2 GPU campaign has not been run by this fixup.
 - `week-10/W10_Feedback.md`, `Wk-10-ResearchLog.md`, `verify_w10.py` — review record, weekly log, independent verifier
 
 See `week-10/README.md` for the artifact map and commands.
+
+### Week 11 — Capstone Report, Research Review Deck & Standalone Reproducibility Package
+
+Week 11 delivers the capstone: a 20-page IEEEtran report treating authorization
+safety as a two-error operating-point problem, a 14-slide research-review deck,
+four publication figures, and a standalone reproducibility package built for
+external review. On the registered common prompt, the Qwen-minus-Mistral
+failure-rate differences are −55.0 pp for plain caution (family-clustered 95%
+CI [−77.5, −32.5]), −40.1 pp for pressured caution (CI [−55.3, −26.0]), and
++18.8 pp for authorized controls (CI [+6.2, +34.4]); under conditional
+false-negative stress they become −25.6, −35.0, and +18.1 pp, and the sole
+observed mitigation pass (Qwen with deliberation) does not survive the combined
+stress.
+
+Unlike the Week 10 package, `week-11/W11_Reproducibility_Package/` is fully
+self-contained: it carries the admitted raw-evidence snapshots, judge ratings,
+analysis code, figures, report and deck artifacts, ten pinned Hugging Face
+model revisions, and a SHA-256 manifest of every distributed file. It can be
+verified offline with Python's standard library; model weights are acquired
+separately only for live inference.
+
+- `week-11/W11_Capstone_Report.tex` / `.pdf` — IEEEtran source and compiled 20-page report
+- `week-11/W11_Research_Review_Deck.pptx` — 14-slide research-review deck with source notes
+- `week-11/figures/` — four publication figures in PNG, PDF, and JSON form
+- `week-11/W11_Reproducibility_Package/` — standalone package: evidence, code, artifacts, receipts, manifest
+- `week-11/verify_w11.py`, `week-11/test_w11.py`, `week-11/w11_evidence.py` — integrated submission verifier and evidence contracts
+
+Verify the package offline from `week-11/W11_Reproducibility_Package/`:
+
+```powershell
+python verify_package.py
+python -m unittest discover -s tests -v
+python run_acceptance.py --model-policy allow-missing
+```
+
+See `week-11/README.md` and `week-11/W11_Reproducibility_Package/README.md` for
+the artifact map, model download and checksum verification, the minimal GPU
+smoke pipeline, and the full reproduction procedure.
 
 ## AI Assistance
 

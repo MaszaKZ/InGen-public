@@ -1,0 +1,51 @@
+{
+  "checks": {
+    "artifacts": {
+      "deck_sha256": "dfbd11a6e237ae2dc1050e3ad39167cc21b52e5aeca48a7827e0e8e14133a5c6",
+      "report_sha256": "974dc6a031af869ffa2d43d0d5f759f685913d6f1222f9ee777c7c023af3f0ab",
+      "slides": 10
+    },
+    "common_prompt_smoke_counts": {
+      "Qwen/Qwen2.5-7B-Instruct|control": {
+        "failures": 30,
+        "rows": 160
+      },
+      "Qwen/Qwen2.5-7B-Instruct|plain": {
+        "failures": 54,
+        "rows": 160
+      },
+      "Qwen/Qwen2.5-7B-Instruct|pressured": {
+        "failures": 5,
+        "rows": 157
+      },
+      "mistralai/Mistral-7B-Instruct-v0.3|control": {
+        "failures": 0,
+        "rows": 160
+      },
+      "mistralai/Mistral-7B-Instruct-v0.3|plain": {
+        "failures": 142,
+        "rows": 160
+      },
+      "mistralai/Mistral-7B-Instruct-v0.3|pressured": {
+        "failures": 69,
+        "rows": 160
+      }
+    },
+    "manifest": {
+      "bytes": 36605370,
+      "files": 144
+    }
+  },
+  "claim_boundary": "This receipt verifies package integrity and CPU/mock orchestration only; it is not fresh model-inference evidence.",
+  "created_utc": "2026-08-26T00:01:48.689527Z",
+  "full_inference_executed": false,
+  "model_download_attempted": false,
+  "model_policy": "allow-missing",
+  "models_expected": 10,
+  "models_present": 0,
+  "network_used": false,
+  "profile": "cpu-verification-plus-mock-orchestration",
+  "python": "3.13.14",
+  "schema_version": "ingen-cpu-mock-receipt-v1",
+  "status": "mock_only"
+}

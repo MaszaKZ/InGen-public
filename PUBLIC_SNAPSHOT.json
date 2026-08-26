@@ -2,8 +2,8 @@
   "deterministic": true,
   "export_manifest_schema": "ingen-public-export-v1",
   "schema_version": "ingen-public-snapshot-v1",
-  "source_commit": "3a6441757574dea21093510f6a3786c95ee92009",
-  "source_commit_timestamp": "2026-08-14T17:52:39-04:00",
+  "source_commit": "1989f335c7562b8f74444286ebc26c317bfe5024",
+  "source_commit_timestamp": "2026-08-25T21:11:57-04:00",
   "transformed_paths": [
     ".gitattributes",
     ".gitignore",
@@ -25,6 +25,7 @@
     "week-10/W10_Reproducibility_Package/reproduce_fresh.py",
     "week-10/W10_Reproducibility_Package/test_reproduce_fresh.py",
     "week-10/Wk-10-ResearchLog.md",
-    "week-10/verify_w10.py"
+    "week-10/verify_w10.py",
+    "week-11/build_w11_deck.mjs"
   ]
 }

@@ -1,0 +1,4 @@
+# Preserve the standalone package byte-for-byte across Windows checkouts.
+W11_Reproducibility_Package/** -text
+# Keep the primary LaTeX source byte-identical to its packaged copy.
+W11_Capstone_Report.tex -text

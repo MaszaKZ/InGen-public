@@ -1,0 +1,5 @@
+# Optional reruns create fresh outputs beside the immutable evidence snapshots.
+W11_Reproducibility_Package/generated-receipts/
+W11_Reproducibility_Package/source/week-06/W06_Raw_Model_Outputs.jsonl
+W11_Reproducibility_Package/source/week-07/W07_Preflight_Raw_Model_Outputs.jsonl
+W11_Reproducibility_Package/source/week-07/W07_Raw_Model_Outputs.jsonl

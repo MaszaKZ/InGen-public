@@ -1,0 +1,57 @@
+{
+  "claim_boundary": "Verifies offline loading and short generation for the pinned Qwen generator only; does not verify Mistral, judges, full confirmation, or reproduction of admitted results.",
+  "created_utc": "2026-08-25T18:18:08.364706Z",
+  "deviations": 0,
+  "environment": {
+    "accelerate": "1.14.0",
+    "bitsandbytes": "0.49.2",
+    "cuda": "12.6",
+    "hardware": "NVIDIA GeForce RTX 3080 Ti Laptop GPU",
+    "peak_cuda_memory_bytes": 5766988800,
+    "python": "3.13.14",
+    "torch": "2.11.0+cu126",
+    "transformers": "5.12.0"
+  },
+  "execution": {
+    "batch_size": 1,
+    "command": "python run_w07_replication.py --phase preflight --models qwen --batch-size 1 --limit 1",
+    "conditions": [
+      "adapted_baseline",
+      "common_baseline",
+      "constraint_gated",
+      "deliberation",
+      "structured_output"
+    ],
+    "generated_rows": 5,
+    "hit_token_cap": 0,
+    "input_token_counts": [
+      287,
+      208,
+      376,
+      320,
+      313
+    ],
+    "nonblank_rows": 5,
+    "output_token_counts": [
+      74,
+      62,
+      69,
+      49,
+      71
+    ],
+    "phase": "preflight",
+    "raw_outputs_included": false,
+    "raw_outputs_sha256": "d42e061607c4f8bac5c2bf8777bb62c45cd7e51a896f5d99e926b127d1a5091e",
+    "scenario_limit": 1,
+    "unique_responses": 5
+  },
+  "model": {
+    "cache_included": false,
+    "remote_checksum_files_verified": 14,
+    "repo_id": "Qwen/Qwen2.5-7B-Instruct",
+    "revision": "a09a35458c702b33eeacc393d103063234e8bc28",
+    "snapshot_bytes": 15242807690
+  },
+  "schema_version": "ingen-short-inference-receipt-v1",
+  "status": "partial_inference_verified"
+}

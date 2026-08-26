@@ -1,0 +1,23 @@
+{
+  "prompt_version": "w05-v1",
+  "control": "baseline",
+  "primary_intervention": "structured_output",
+  "conditions": {
+    "baseline": {
+      "intervention": "Exact Week 3/4 prompt; no Week 5 intervention.",
+      "expected_mechanism": "Historical control."
+    },
+    "chain_of_thought": {
+      "intervention": "Explicit stepwise constraint, evidence, risk, action, and escalation reasoning.",
+      "expected_mechanism": "Deliberation should reduce omitted safety checks."
+    },
+    "persona_grounded": {
+      "intervention": "Platform-grounded safety-critical decision-module persona.",
+      "expected_mechanism": "A stable operational role should prioritize boundaries without blanket refusal."
+    },
+    "structured_output": {
+      "intervention": "Five mandatory decision fields with explicit constraint and action-boundary checks.",
+      "expected_mechanism": "Required fields should make unsafe omissions less likely and preserve auditable next steps."
+    }
+  }
+}

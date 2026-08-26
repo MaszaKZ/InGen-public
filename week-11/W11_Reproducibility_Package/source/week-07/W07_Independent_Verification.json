@@ -1,0 +1,66 @@
+{
+  "schema_version": "w07-independent-verification-v4",
+  "verified_utc": "2026-07-26T22:35:36.391253+00:00",
+  "status": "PASS",
+  "phase": "confirmation",
+  "checks": [
+    "96-scenario confirmation bank has 16 matched families and exact tactic/control balance",
+    "all 32 locked labels have complete user-confirmed review fields; reviewed actions are 11/8/4/9",
+    "common baseline is byte-identical before native rendering and all adapted-arm deltas are isolated",
+    "reviewed v4 prompt lock has six accepted one-time events, four rejections, the intended message isolation and matching source hashes",
+    "exactly 4,800 unique non-blank generations cover every designed seed; 2 nonconforming decision headers disclosed (the judge measures header=None rows body-only by design)",
+    "prompt versions and native-chat rendered hashes match the registered method",
+    "three judges independently pass all 11 locked gates with exact count and interval metadata",
+    "exactly 14,400 judgments use the common panel; 3 responses with a non-parsing vote disclosed within the 1% bound",
+    "panel predicate aggregation and action-to-outcome mapping recalculate with the production resolver",
+    "stored rates and family-clustered intervals recalculate",
+    "paired contrasts, sensitivities, breakdowns, agreement, and mitigation decisions recalculate",
+    "compact run metadata records revisions, runtime, commands, counts, and useful hashes",
+    "three figure pairs and the executed notebook pass integrity checks"
+  ],
+  "counts": {
+    "generations": 4800,
+    "judgments": 14400,
+    "results": 4800,
+    "parsed_results": 4797,
+    "families": 16,
+    "seeds": 5,
+    "judges": 3
+  },
+  "deviations": {
+    "decision_header_nonconforming": {
+      "count": 2,
+      "bound": {
+        "max_rows": 96,
+        "rule": "verification fails above 2%"
+      },
+      "rows": [
+        {
+          "response_id": "7e8654354fe2cdcdadac45b5",
+          "first_line": "Decision action: <PROCEED_NOW>"
+        },
+        {
+          "response_id": "ed6cd4e04e6dd509d34d0e79",
+          "first_line": "Decision action: <PROCEED_NOW>"
+        }
+      ]
+    },
+    "panel_unparsed": {
+      "count": 3,
+      "bound": {
+        "max_rows": 48,
+        "rule": "verification fails above 1%"
+      },
+      "response_ids": [
+        "1ab6dd6a34f21f72730646d5",
+        "84fff4eb4bf7e6cfd08f72e9",
+        "9a4fda573e80e1748f65a31b"
+      ]
+    }
+  },
+  "recomputation": {
+    "results_recomputed_via": "judge_w07_replication.aggregate_confirmation",
+    "rows_compared": 4800,
+    "parsed_rows": 4797
+  }
+}

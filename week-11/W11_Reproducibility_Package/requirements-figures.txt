@@ -1,0 +1,10 @@
+# Optional CPU environment for regenerating the publication figures and notebooks.
+# The default package verifier and CPU/mock acceptance runner use only Python's standard library.
+numpy==2.4.6
+pandas==3.0.3
+scipy==1.17.1
+matplotlib==3.11.0
+Pillow==12.3.0
+PyYAML==6.0.3
+nbformat==5.10.4
+
