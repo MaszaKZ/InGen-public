@@ -2,8 +2,8 @@
   "deterministic": true,
   "export_manifest_schema": "ingen-public-export-v1",
   "schema_version": "ingen-public-snapshot-v1",
-  "source_commit": "1989f335c7562b8f74444286ebc26c317bfe5024",
-  "source_commit_timestamp": "2026-08-25T21:11:57-04:00",
+  "source_commit": "34e48efc2ed8bf981830b1a96ceadca33e85cb0c",
+  "source_commit_timestamp": "2026-08-30T14:35:10-04:00",
   "transformed_paths": [
     ".gitattributes",
     ".gitignore",

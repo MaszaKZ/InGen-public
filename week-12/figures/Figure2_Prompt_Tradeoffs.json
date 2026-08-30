@@ -1,0 +1,250 @@
+{
+  "conditions": [
+    "adapted_baseline",
+    "deliberation",
+    "structured_output",
+    "constraint_gated"
+  ],
+  "rates": [
+    {
+      "ci_pct": [
+        8.1,
+        30.0
+      ],
+      "condition": "Adapted baseline",
+      "condition_id": "adapted_baseline",
+      "failures": 30,
+      "model": "Mistral-7B-Instruct-v0.3",
+      "model_id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "rate_pct": 18.8,
+      "rows": 160,
+      "subtype": "pressured",
+      "subtype_label": "Pressured caution"
+    },
+    {
+      "ci_pct": [
+        0.0,
+        15.6
+      ],
+      "condition": "Adapted baseline",
+      "condition_id": "adapted_baseline",
+      "failures": 10,
+      "model": "Mistral-7B-Instruct-v0.3",
+      "model_id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "rate_pct": 6.2,
+      "rows": 160,
+      "subtype": "control",
+      "subtype_label": "Authorized control"
+    },
+    {
+      "ci_pct": [
+        8.1,
+        31.2
+      ],
+      "condition": "Deliberation",
+      "condition_id": "deliberation",
+      "failures": 31,
+      "model": "Mistral-7B-Instruct-v0.3",
+      "model_id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "rate_pct": 19.4,
+      "rows": 160,
+      "subtype": "pressured",
+      "subtype_label": "Pressured caution"
+    },
+    {
+      "ci_pct": [
+        0.0,
+        9.4
+      ],
+      "condition": "Deliberation",
+      "condition_id": "deliberation",
+      "failures": 5,
+      "model": "Mistral-7B-Instruct-v0.3",
+      "model_id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "rate_pct": 3.1,
+      "rows": 160,
+      "subtype": "control",
+      "subtype_label": "Authorized control"
+    },
+    {
+      "ci_pct": [
+        9.4,
+        31.9
+      ],
+      "condition": "Structured output",
+      "condition_id": "structured_output",
+      "failures": 33,
+      "model": "Mistral-7B-Instruct-v0.3",
+      "model_id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "rate_pct": 20.6,
+      "rows": 160,
+      "subtype": "pressured",
+      "subtype_label": "Pressured caution"
+    },
+    {
+      "ci_pct": [
+        0.0,
+        15.6
+      ],
+      "condition": "Structured output",
+      "condition_id": "structured_output",
+      "failures": 10,
+      "model": "Mistral-7B-Instruct-v0.3",
+      "model_id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "rate_pct": 6.2,
+      "rows": 160,
+      "subtype": "control",
+      "subtype_label": "Authorized control"
+    },
+    {
+      "ci_pct": [
+        25.0,
+        46.2
+      ],
+      "condition": "Constraint gating",
+      "condition_id": "constraint_gated",
+      "failures": 58,
+      "model": "Mistral-7B-Instruct-v0.3",
+      "model_id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "rate_pct": 36.2,
+      "rows": 160,
+      "subtype": "pressured",
+      "subtype_label": "Pressured caution"
+    },
+    {
+      "ci_pct": [
+        0.0,
+        3.8
+      ],
+      "condition": "Constraint gating",
+      "condition_id": "constraint_gated",
+      "failures": 2,
+      "model": "Mistral-7B-Instruct-v0.3",
+      "model_id": "mistralai/Mistral-7B-Instruct-v0.3",
+      "rate_pct": 1.2,
+      "rows": 160,
+      "subtype": "control",
+      "subtype_label": "Authorized control"
+    },
+    {
+      "ci_pct": [
+        0.0,
+        7.5
+      ],
+      "condition": "Adapted baseline",
+      "condition_id": "adapted_baseline",
+      "failures": 4,
+      "model": "Qwen2.5-7B-Instruct",
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "rate_pct": 2.5,
+      "rows": 160,
+      "subtype": "pressured",
+      "subtype_label": "Pressured caution"
+    },
+    {
+      "ci_pct": [
+        4.4,
+        25.0
+      ],
+      "condition": "Adapted baseline",
+      "condition_id": "adapted_baseline",
+      "failures": 23,
+      "model": "Qwen2.5-7B-Instruct",
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "rate_pct": 14.4,
+      "rows": 160,
+      "subtype": "control",
+      "subtype_label": "Authorized control"
+    },
+    {
+      "ci_pct": [
+        0.0,
+        0.0
+      ],
+      "condition": "Deliberation",
+      "condition_id": "deliberation",
+      "failures": 0,
+      "model": "Qwen2.5-7B-Instruct",
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "rate_pct": 0.0,
+      "rows": 160,
+      "subtype": "pressured",
+      "subtype_label": "Pressured caution"
+    },
+    {
+      "ci_pct": [
+        6.2,
+        28.1
+      ],
+      "condition": "Deliberation",
+      "condition_id": "deliberation",
+      "failures": 25,
+      "model": "Qwen2.5-7B-Instruct",
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "rate_pct": 15.6,
+      "rows": 160,
+      "subtype": "control",
+      "subtype_label": "Authorized control"
+    },
+    {
+      "ci_pct": [
+        0.0,
+        9.4
+      ],
+      "condition": "Structured output",
+      "condition_id": "structured_output",
+      "failures": 5,
+      "model": "Qwen2.5-7B-Instruct",
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "rate_pct": 3.1,
+      "rows": 160,
+      "subtype": "pressured",
+      "subtype_label": "Pressured caution"
+    },
+    {
+      "ci_pct": [
+        3.1,
+        25.0
+      ],
+      "condition": "Structured output",
+      "condition_id": "structured_output",
+      "failures": 20,
+      "model": "Qwen2.5-7B-Instruct",
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "rate_pct": 12.5,
+      "rows": 160,
+      "subtype": "control",
+      "subtype_label": "Authorized control"
+    },
+    {
+      "ci_pct": [
+        0.0,
+        0.0
+      ],
+      "condition": "Constraint gating",
+      "condition_id": "constraint_gated",
+      "failures": 0,
+      "model": "Qwen2.5-7B-Instruct",
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "rate_pct": 0.0,
+      "rows": 160,
+      "subtype": "pressured",
+      "subtype_label": "Pressured caution"
+    },
+    {
+      "ci_pct": [
+        9.4,
+        34.4
+      ],
+      "condition": "Constraint gating",
+      "condition_id": "constraint_gated",
+      "failures": 35,
+      "model": "Qwen2.5-7B-Instruct",
+      "model_id": "Qwen/Qwen2.5-7B-Instruct",
+      "rate_pct": 21.9,
+      "rows": 160,
+      "subtype": "control",
+      "subtype_label": "Authorized control"
+    }
+  ]
+}

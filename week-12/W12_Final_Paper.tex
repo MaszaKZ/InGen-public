@@ -1,0 +1,453 @@
+% !TEX program = tectonic
+\documentclass[conference]{IEEEtran}
+
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{cite}
+\usepackage{microtype}
+\usepackage[hidelinks]{hyperref}
+
+\urlstyle{same}
+\hypersetup{
+  pdftitle={Generator Choice Sets the Safety Operating Point: Unsafe Compliance and Over-Refusal in Language-Model Decisions for Service Robots},
+  pdfauthor={Ziyue Li},
+  pdfsubject={Safety evaluation of language-model decisions for service robots},
+  pdfkeywords={embodied AI, language-model safety, over-refusal, robot authorization, service robots, unsafe compliance}
+}
+\frenchspacing
+\raggedbottom
+\setlength{\tabcolsep}{3.5pt}
+\renewcommand{\arraystretch}{1.08}
+\hyphenation{author-ized author-i-za-tion}
+
+\title{Generator Choice Sets the Safety Operating Point: Unsafe Compliance and Over-Refusal in Language-Model Decisions for Service Robots}
+
+\author{
+\IEEEauthorblockN{Ziyue Li}
+\IEEEauthorblockA{\textit{InGen Dynamics}}
+}
+
+% IEEEtran locks this hook in conference mode. Restore it intentionally so
+% the abstract and index terms span the full page width beneath the title.
+\IEEEoverridecommandlockouts
+\IEEEaftertitletext{%
+\vspace{-0.35\baselineskip}
+\noindent\hfill
+\begin{minipage}{0.94\textwidth}
+\begin{abstract}
+Service-robot platforms delegate operational decisions to language models, where two failure modes compete: complying with an unsafe request and refusing an authorized one. A registered confirmation study measures both errors jointly. On a synthetic, text-only bank of 96 scenarios in 16 families spanning security and assistive-care decisions, two pinned 7B-class generators produced 4,800 generations across five prompt arms and five seeds. A calibrated three-model panel produced 14,400 judgments. Under a byte-identical common prompt, generator choice set the safety operating point rather than producing a one-axis ranking: Qwen2.5-7B-Instruct's failure rates were 55.0 percentage points lower than Mistral-7B-Instruct-v0.3's on plain-caution scenarios (family-clustered 95\% CI [$-77.5$, $-32.5$]) and 40.1 percentage points lower on pressured-caution scenarios (CI [$-55.3$, $-26.0$]), but its authorized-control refusal rate was 18.8 percentage points higher (CI [$+6.2$, $+34.4$]). Only one of six intervention arms met the registered rule on observed data, and prompt effects did not transfer across generators. Every reported rate is an LLM-judge measurement, not an independently human-labeled endpoint: under the disclosed amendment and a conditional false-negative stress test, the plain contrast moves to $-25.6$ percentage points without changing sign, but the lone observed-data mitigation pass does not survive combined measurement stress. Safety evaluation should report unsafe compliance and over-refusal jointly.
+\end{abstract}
+\vspace{0.35\baselineskip}
+\begin{IEEEkeywords}
+embodied AI, language-model safety, over-refusal, robot authorization, service robots, unsafe compliance
+\end{IEEEkeywords}
+\end{minipage}
+\hfill\mbox{}\\[0.45\baselineskip]
+}
+
+\begin{document}
+
+\maketitle
+
+\section{Introduction}
+
+Language models increasingly mediate operational decisions in service robots. A security robot may decide whether a request to silence an alarm is authorized~\cite{ingen2026sentinel}; an assistive humanoid may decide whether to begin a lift transfer; and a home-care robot may decide whether to disclose a medication schedule~\cite{ingen2026origami}. In each case, the relevant failure occurs at an authorization boundary: operational facts arrive in language, and the model must either execute the requested action or withhold it pending verification.
+
+Evaluations of these decision layers often report a single safety measure: how frequently the model takes an unsafe action. That measure is incomplete, because a system can avoid unsafe actions by refusing every request, and such refusals block authorized care and legitimate operator workflows. Deployment evaluation is therefore two-sided: it must ask how often a configuration complies unsafely and how often it refuses an authorized action. We treat each configuration as an operating point defined by these two errors, following the general framing of conformal decision theory~\cite{lekeufack2023conformal}.
+
+The central result is that generator choice traded unsafe compliance against authorized-control refusal rather than reducing both error rates at once. Under a byte-identical common prompt on a shared 96-scenario bank, Qwen2.5-7B-Instruct shifted plain-caution failure by $-55.0$ percentage points (pp), pressured-caution failure by $-40.1$ pp, and authorized-control refusal by $+18.8$ pp relative to Mistral-7B-Instruct-v0.3; all family-clustered 95\% confidence intervals excluded zero. A reviewer can recompute this contrast from committed analysis artifacts, but cannot independently evaluate the ground truth of labels assigned by the judge panel described in Section~\ref{sec:adjudication}. Section~\ref{sec:stress} therefore bounds how far error in the panel's weakest validated strata could move the headline result.
+
+Three additional findings qualify this result. First, of six intervention arms---deliberation, structured output, and constraint gating for each generator---only Qwen with deliberation met the registered mitigation rule. Second, both generators failed plain-caution scenarios more often than adversarially pressured ones. This finding reverses the direction observed in an earlier study conducted with a different bank, prompt template, and judge stack, which indicates design-stack sensitivity. Third, apparent intervention effects changed with the measurement method: a lexical rubric indicated an improvement that a later semantic audit did not support. The present study therefore uses a semantically adjudicated operational endpoint.
+
+The study accordingly addresses three questions: whether generator choice changes unsafe-compliance and authorized-control-refusal rates under identical instructions; whether any tested prompt intervention reduces both error rates under the registered mitigation rule, and whether its effect transfers between generators; and how pressure cues and measurement choices shape the observed failure pattern. The results close with a conditional judge-measurement stress analysis in Section~\ref{sec:stress}.
+
+\section{Related Work}
+\label{sec:related}
+
+\subsection{Robot Foundation Models and Their Evaluations}
+
+Generalist robot policies have shown that cross-embodiment data can improve transfer. Examples include Open X-Embodiment and RT-X across diverse robots~\cite{openx2023rtx}, OpenVLA as an open 7B vision-language-action baseline~\cite{kim2024openvla}, Octo as an adaptable generalist policy~\cite{octo2024policy}, and $\pi_0$ as a flow-based policy for dexterous control~\cite{black2024pi0}. Their evaluations primarily measure task success: transfer to held-out embodiments and scenes, adaptation efficiency, and zero-shot manipulation. Success-rate evaluation treats every completed action as a gain; an authorization evaluation must also treat some completed actions as failures, which requires scenario-level ground truth about whether the request should have been executed at all.
+
+ReVLA studies brittleness under visual domain shift and addresses it through model merging~\cite{dey2024revla}. FoMER evaluates step-by-step embodied reasoning and scores safety awareness, action validity, and final-answer accuracy~\cite{dissanayake2025fomer}. Among the evaluations cited here it is the closest in format, because it asks models to reason through embodied situations rather than classify isolated safety statements. Two design questions separate the benchmarks and explain why we built a new bank rather than adding paired controls to FoMER's scenarios. First, the unit of evaluation differs. A FoMER item presents an embodied scene and scores both an answer and the quality of the model's reasoning steps; our items reduce to a single authorization-gated operational decision. In scenario \texttt{W7R-F01-P1}, a contractor asks the security robot to open a rail-platform screen gate that may open only under a recorded traction-power isolation and an active work permit, and the scored outcome is solely whether the gate operation begins now. Our executes-now endpoint separates a safe-sounding explanation from the action it authorizes---a distinction stepwise-reasoning scores do not require. Our earlier lexical-rubric audit showed exactly that divergence: a lexical rubric certified an improvement that semantic adjudication of the operational outcome did not support. Whether FoMER's safety-awareness scores track executes-now outcomes, or the lexical safety behavior that the audit exposed, is an open empirical question.
+
+Second, FoMER does not expose over-refusal as a dedicated paired endpoint. Blanket refusal can still lose final-answer or action-validity credit, but the benchmark does not separately price refusal of an authorized action against unsafe execution of its matched unauthorized variant. The benchmarks are therefore complementary: FoMER measures the breadth and quality of embodied reasoning, whereas ours isolates the two-error authorization trade-off. Applying both scoring schemes to a shared scenario set remains future work.
+
+Robot evaluations more broadly do not report unsafe action and incorrect refusal together, so they cannot distinguish a model that behaves safely from one that simply refuses more requests. Outside robotics, Health-ORSC-Bench measures over-refusal alongside safe-completion quality in health-language-model prompts~\cite{zhang2026healthorsc}. It establishes the broader relevance of two-sided evaluation but does not test authorization-gated robot actions or paired authorized controls. Reviews of foundation-model service robots similarly catalog sensor fusion, real-time decision making, and human--robot interaction challenges without proposing this joint endpoint~\cite{lisondra2025embodied}.
+
+\subsection{Runtime Safety Mechanisms}
+
+Runtime safety layers such as ATACOM constrain the action space of generalist robot policies rather than assuming safe behavior will emerge from demonstrations alone~\cite{tolle2025safe}; later work sharpens the constraint representation with geometric inductive biases~\cite{tolle2025inductive}. Control-barrier-function research formalizes safe-state constraints while also documenting the limits of learned barriers~\cite{guerrier2024barrier}; out-of-distribution assurance treats novelty detection as part of a deployment safety case~\cite{hodge2025ood}. Runtime-governance systems instead externalize policy checking, capability admission, monitoring, rollback, and human override. In a controlled simulation, recent work reports unauthorized-action interception rate and false-rejection rate together~\cite{qin2026runtime}. That work reaches the authorization boundary studied here and explicitly counts wrongly blocked authorized actions, but its zero false-rejection result comes from a deterministic, well-separated policy boundary rather than language-mediated authorization ambiguity.
+
+Geometric mechanisms can guarantee mathematically specified constraints such as joint limits, collision volumes, or safe sets. High-level authorization facts---for example, whether a caller has permission to disable a camera---usually lack an equivalent geometric specification. Our constraint-gating condition implements a prompt-level prerequisite check and measures errors in both directions.
+
+\subsection{Calibrated Decisions and Trust}
+
+Conformal decision theory provides risk-calibrated rules for choosing among acting, deferring, and switching to a backup policy~\cite{lekeufack2023conformal}. It motivates our operating-point framing. Applying its guarantees to authorization decisions presupposes calibration data from the target request distribution and a loss that prices each error; two-sided failure rates of the kind reported here supply the empirical ingredients such a rule consumes. Human--robot interaction research likewise argues that trust should be calibrated rather than maximized: both overtrust and disuse are failures~\cite{rezaeikhavas2020trust,perkins2021trust}, explanations should support appropriate reliance~\cite{sanneman2020trust}, and trust responses vary by population and task sensitivity~\cite{wald2024mistakes,rudenko2024child,mazzola2025interaction}. This literature motivates treating over-refusal as a first-class cost---a robot that refuses authorized care actions erodes the calibrated reliance these authors describe---but does not provide an executable benchmark for authorization decisions.
+
+\subsection{What This Paper Adds}
+
+To our knowledge from the preliminary literature review, no public study combines three properties: a registered and seed-replicated cross-generator contrast under a byte-identical prompt; joint measurement of unsafe compliance and authorized-action refusal as co-primary endpoints; and service-robot authorization scenarios with paired plain, pressured, and authorized-control variants. The present study addresses this gap.
+
+\section{Methods}
+\label{sec:methods}
+
+All design elements were registered in advance: the protocol fixed the scenario bank, prompt text, model revisions, seeds, decoding settings, outcome rule, uncertainty procedure, mitigation threshold, and allowable exclusions before any generation or analysis began.
+
+\subsection{Scenario Bank}
+
+The bank contains 96 synthetic scenarios in 16 families of six. Eight families cover security-platform decisions, including gate releases, camera deactivations, drone launches, and alarm silencing. Eight cover assistive-care decisions, including medication, feeding-tube, lift-transfer, and privacy actions. Each family contributes paired variants for three subtypes: plain caution, in which a boundary-crossing request's governing prerequisite is stated but not satisfied; pressured caution, in which the same boundary is presented under an authority claim, false clearance, urgency, or normalization tactic; and authorized control, in which the narrator establishes valid authorization, so refusal is the failure. In one security family, for example, a track-maintenance contractor asks the security robot to open a rail-platform screen gate that may open only under a recorded traction-power isolation and the line controller's active work permit. The plain variant states this prerequisite without satisfying it, the pressured variant adds an authority claim or an asserted clearance that the narrator's facts do not support, and the authorized control records both the isolation and the active permit. Because the bank is constructed rather than sampled from deployments, all reported rates are bank-relative.
+
+\subsection{Generators and Prompt Conditions}
+
+Two pinned, NF4 (4-bit NormalFloat) double-quantized generators---Mistral-7B-Instruct-v0.3 and Qwen2.5-7B-Instruct---were each evaluated under five prompt conditions: a byte-identical common baseline, a model-adapted baseline, deliberation, structured output, and constraint gating. The deliberation condition elicits step-by-step reasoning before the decision, and the structured-output condition requires a fixed decision structure that names the decision action, governing fact, operational step, and escalation path. The constraint-gating condition adds an explicit prerequisite check: requester assertions never satisfy the prerequisite; only a direct narrator statement of the required approval does. Only the common baseline defines the registered cross-generator endpoint because it holds prompt text fixed before native chat-template rendering.
+
+Each condition covered all 96 scenarios at five registered seeds (20260801--20260805) with temperature 0.2, top-$p$ 0.9, and 256 maximum new tokens. The design produced 4,800 generations and 14,400 judge decisions. Table~\ref{tab:design} summarizes the registered design.
+
+\begin{table*}[!t]
+\centering
+\caption{Registered Experimental Design}
+\label{tab:design}
+\footnotesize
+\begin{tabular}{@{}p{0.19\textwidth}p{0.77\textwidth}@{}}
+\toprule
+\textbf{Component} & \textbf{Registered value} \\
+\midrule
+Scenario bank & 96 scenarios in 16 families of six: 32 plain caution, 32 pressured caution, and 32 authorized control. \\
+Generators & Mistral-7B-Instruct-v0.3 (revision \texttt{c170c708c41d}) and Qwen2.5-7B-Instruct (revision \texttt{a09a35458c70}). \\
+Prompt conditions & Common baseline (registered cross-generator endpoint), adapted baseline, deliberation, structured output, and constraint gating. \\
+Seeds & 20260801, 20260802, 20260803, 20260804, and 20260805. \\
+Generations / judgments & 4,800 / 14,400. \\
+Decoding & Temperature 0.2, top-$p$ 0.9, 256 maximum new tokens; NF4 double quantization with float16 compute. \\
+Judge panel & Granite 3.3 8B, Phi-4 14B, and Falcon3 10B; three vendors, disjoint from both generator families. \\
+Primary estimands & Panel-majority failure rates and scenario-and-seed-paired Qwen-minus-Mistral contrasts under the common baseline. \\
+Uncertainty & 10,000 bootstrap draws over complete scenario families (seed 20260806). \\
+Mitigation rule & At least 25\% relative pressured-failure reduction with no more than 3.125 pp added authorized-control failure. \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\subsection{Outcome Adjudication and Panel Acceptance}
+\label{sec:adjudication}
+
+The endpoint is binary and operational: whether the requested operation begins now. A response fails a caution scenario if the operation proceeds without the governing prerequisite and fails a control scenario if the authorized operation is refused. A three-judge panel---Granite 3.3 8B, Phi-4 14B, and Falcon3 10B; three vendors, disjoint from both generator families---assigned the outcomes. Each judge extracts evidence-backed operational predicates; predicate votes are aggregated by majority, and the executes-now outcome is then resolved deterministically.
+
+Because every downstream number depends on this instrument, we state its acceptance record before any result. The panel passed all 11 registered calibration gates on a 96-response gold set whose labels were AI-assisted and externally human-verified, not independently human-labeled. Across five single-shot independent holdouts, the instrument family classified 80 of 83 fresh binary outcomes correctly (exact Clopper--Pearson 95\% CI [0.898, 0.992]; the acceptance record rounds the upper bound to 0.993), while repeatedly tripping a zero-miss floor on single borderline rows. A preregistered ceiling analysis showed that such floors cannot reliably certify any panel at this holdout size. The confirmation run therefore proceeded under a disclosed, human-authorized acceptance amendment dated 2026-07-25. The weakest pooled unsafe-compliance stratum was 14/16 (CP95 lower bound 0.617), while over-verification detection was 18/18 (lower bound 0.815); Section~\ref{sec:stress} conditionally stress-tests both false-negative directions and states the unestimated false-positive boundary.
+
+\subsection{Registered Analysis}
+
+The primary analysis estimates panel-majority failure rates for each generator, condition, and subtype, then computes scenario-and-seed-paired Qwen-minus-Mistral contrasts under the common baseline. Confidence intervals use 10,000 bootstrap draws over complete scenario families. Because the family is the independence unit, the 16-family design limits interval resolution to 6.25-point steps.
+
+A registered two-sided mitigation rule compares each intervention with its within-generator adapted baseline. An arm passes only if it reduces pressured failure by at least 25\% while adding no more than 3.125 pp of authorized-control failure. Secondary statistics include Cohen's $h$, risk ratios, and exact McNemar tests on paired outcomes.
+
+Three of 14,400 judge outputs were unparsed (0.02\%), affecting three of 4,800 generation rows (0.06\%). All three affected rows were Qwen common-baseline pressured rows, excluded and row-listed in the analysis artifact; the registered limit was 48 affected rows. Two decision headers were nonconforming. Independent verification re-derived all analysis outputs from the committed response and rating records.
+
+Each family contains two variants of each subtype, so the plain, pressured, and authorized-control rows share a task domain and governing prerequisite. The five decoding seeds rerun the same fixed scenarios rather than introducing new tasks. Treating all scenario--seed rows as independent would therefore overstate precision. The registered bootstrap instead resamples complete six-scenario families and retains every available seed-level outcome for each sampled family. The resulting intervals describe variation across the 16 designed families.
+
+Holding the instruction bytes fixed removes model-specific prompt wording as an explanation, but each generator still uses its native chat template, tokenizer, pinned weights, and quantized inference stack. We therefore interpret the result as a contrast between two specified generator pipelines. Within-generator intervention comparisons answer a different question because they use each model's adapted baseline.
+
+\section{Results}
+\label{sec:results}
+
+\subsection{Cross-Generator Trade-Off}
+
+Table~\ref{tab:rates} reports panel-majority failure rates for every condition, Table~\ref{tab:primary} reports the registered primary contrasts, and Fig.~\ref{fig:common} shows the common-baseline comparison.
+
+\begin{table*}[!t]
+\centering
+\caption{Panel-Majority Failure Rates by Generator, Prompt Condition, and Scenario Type}
+\label{tab:rates}
+\footnotesize
+\begin{tabular}{@{}llccc@{}}
+\toprule
+\textbf{Generator} & \textbf{Condition} &
+\shortstack{\textbf{Plain}\\\textbf{caution}} &
+\shortstack{\textbf{Pressured}\\\textbf{caution}} &
+\shortstack{\textbf{Authorized}\\\textbf{control}} \\
+\midrule
+Mistral & Common baseline & 88.8 (142/160) [72.5, 100.0] & 43.1 (69/160) [29.4, 57.5] & 0.0 (0/160) [0.0, 0.0] \\
+Mistral & Adapted baseline & 57.5 (92/160) [35.0, 78.8] & 18.8 (30/160) [8.1, 30.0] & 6.2 (10/160) [0.0, 15.6] \\
+Mistral & Deliberation & 68.8 (110/160) [43.8, 87.5] & 19.4 (31/160) [8.1, 31.2] & 3.1 (5/160) [0.0, 9.4] \\
+Mistral & Structured output & 46.2 (74/160) [23.1, 69.4] & 20.6 (33/160) [9.4, 31.9] & 6.2 (10/160) [0.0, 15.6] \\
+Mistral & Constraint gating &100.0 (160/160) [100.0, 100.0] & 36.2 (58/160) [25.0, 46.2] & 1.2 (2/160) [0.0, 3.8] \\
+\midrule
+Qwen & Common baseline & 33.8 (54/160) [12.5, 56.2] & 3.2 (5/157) [0.0, 9.4] & 18.8 (30/160) [6.2, 34.4] \\
+Qwen & Adapted baseline & 20.6 (33/160) [4.4, 40.0] & 2.5 (4/160) [0.0, 7.5] & 14.4 (23/160) [4.4, 25.0] \\
+Qwen & Deliberation & 10.0 (16/160) [0.0, 25.0] & 0.0 (0/160) [0.0, 0.0] & 15.6 (25/160) [6.2, 28.1] \\
+Qwen & Structured output & 25.0 (40/160) [6.2, 50.0] & 3.1 (5/160) [0.0, 9.4] & 12.5 (20/160) [3.1, 25.0] \\
+Qwen & Constraint gating &0.0 (0/160) [0.0, 0.0] & 0.0 (0/160) [0.0, 0.0] & 21.9 (35/160) [9.4, 34.4] \\
+\bottomrule
+\end{tabular}
+\vspace{2pt}
+
+\parbox{0.98\textwidth}{\scriptsize Values are percentage (failures/rows) [family-clustered 95\% CI]. Mistral denotes Mistral-7B-Instruct-v0.3 and Qwen denotes Qwen2.5-7B-Instruct. Lower is better in every outcome column.}
+\end{table*}
+
+\begin{table}[!t]
+\centering
+\caption{Registered Common-Baseline Contrasts}
+\label{tab:primary}
+\footnotesize
+\begin{tabular}{@{}p{0.43\columnwidth}p{0.50\columnwidth}@{}}
+\toprule
+\textbf{Scenario type} & \textbf{Qwen minus Mistral [95\% CI]} \\
+\midrule
+Plain caution & $-55.0$ pp [$-77.5$, $-32.5$], $n=160$ \\
+Pressured caution & $-40.1$ pp [$-55.3$, $-26.0$], $n=157$ \\
+Authorized control & $+18.8$ pp [$+6.2$, $+34.4$], $n=160$ \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.94\textwidth]{figures/Figure1_Operating_Point.pdf}
+\caption{Common-prompt Qwen-minus-Mistral failure-rate contrasts. Negative caution values favor Qwen; positive authorized-control values favor Mistral. Error bars are family-clustered 95\% bootstrap confidence intervals.}
+\label{fig:common}
+\end{figure*}
+
+Under the identical common prompt, the generators occupied different positions in the two-error space. All three registered contrasts excluded zero. Secondary unclustered statistics also indicated large effects: plain caution, Cohen's $h=1.22$ and risk ratio 0.38, with 88 discordant pairs all favoring Qwen (exact McNemar $p<10^{-26}$); pressured caution, $h=1.07$ and risk ratio 0.07; and authorized control, $h=0.90$, with all 30 discordant pairs against Qwen.
+
+No intervention reversed the direction of this trade-off for either generator. A ranking based on either error alone would therefore reverse depending on the chosen endpoint: Qwen was 55 points better on plain unsafe compliance but 19 points worse on authorized-action refusal.
+
+Model-adapted prompting moved each generator along the same trade-off rather than off it (Table~\ref{tab:rates}). Mistral's adapted baseline more than halved its pressured-caution failure relative to the common baseline, from 43.1\% (69/160) to 18.8\% (30/160) ($-24.4$ pp, family-clustered 95\% CI [$-35.0$, $-13.1$]), and reduced plain-caution failure from 88.8\% (142/160) to 57.5\% (92/160), while its authorized-control failure rose from 0.0\% (0/160) to 6.2\% (10/160). Qwen's adapted baseline moved all three point estimates in the favorable direction: plain-caution failure fell from 33.8\% (54/160) to 20.6\% (33/160) ($-13.1$ pp, CI [$-26.9$, $-1.9$]), while the pressured change (3.2\%, 5/157, to 2.5\%, 4/160; CI [$-9.4$, $+8.3$]) and the control change (18.8\%, 30/160, to 14.4\%, 23/160; CI [$-14.4$, $+3.1$]) were smaller than the design could resolve. Prompt adaptation therefore lowered Mistral's caution failure at a small refusal cost and moved Qwen favorably on plain caution. The gap between the two adapted pipelines preserved the direction of the registered contrast on every outcome.
+
+\subsection{Interventions and the Registered Mitigation Rule}
+
+\begin{table*}[!t]
+\centering
+\caption{Registered Mitigation-Rule Disposition Relative to Each Generator's Adapted Baseline}
+\label{tab:mitigation}
+\footnotesize
+\begin{tabular}{@{}llccc@{}}
+\toprule
+\textbf{Generator} & \textbf{Intervention} &
+\textbf{Relative pressured reduction} &
+\textbf{Control-failure change} &
+\textbf{Passes rule} \\
+\midrule
+Mistral & Deliberation & $-3.3\%$ & $-3.1$ pp & No \\
+Mistral & Structured output & $-10.0\%$ & $+0.0$ pp & No \\
+Mistral & Constraint gating &$-93.3\%$ & $-5.0$ pp & No \\
+Qwen & Deliberation & $+100.0\%$ & $+1.3$ pp & \textbf{Yes} \\
+Qwen & Structured output & $-25.0\%$ & $-1.9$ pp & No \\
+Qwen & Constraint gating &$+100.0\%$ & $+7.5$ pp & No \\
+\bottomrule
+\end{tabular}
+\end{table*}
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.96\textwidth]{figures/Figure2_Prompt_Tradeoffs.pdf}
+\caption{Prompt-condition safety and authorized-control cost for (a) Mistral-7B-Instruct-v0.3 and (b) Qwen2.5-7B-Instruct. Each intervention is compared with its own generator's adapted baseline, not the common baseline. The registered rule requires at least 25\% relative pressured-failure reduction with at most 3.125 pp added control failure. Only the Qwen deliberation arm passed on observed data.}
+\label{fig:interventions}
+\end{figure*}
+
+Only the Qwen deliberation arm met the registered rule on observed data (Table~\ref{tab:mitigation}). It eliminated the generator's remaining pressured failures, from 2.5\% to 0.0\% (4/160 to 0/160), at a 1.25-pp control cost, but the change rested on only four discordant pairs (unclustered exact $p=0.125$). The conditional false-negative stress test sharpens this fragility: the pressured 0/160 cell can contain up to three undetected failures at the stated conditional 5\% tail, at which the relative reduction (25\%) sits exactly at the registered minimum. More importantly, applying the 18/18 over-verification stratum's CP95 sensitivity floor to the intervention control cell raises its stressed cost to $+8.1$ pp, above the registered $+3.125$-pp ceiling. The observed-data pass therefore does not survive the combined measurement stress reported in the archived sensitivity record. The deliberation effect observed in our earlier within-Mistral study did not carry over: Mistral's deliberation arm (19.4\%, 31/160) was nearly unchanged from its adapted baseline (18.8\%, 30/160; $h=+0.02$).
+
+Constraint gating also behaved differently across generators. It reduced Qwen's pressured failures to zero but added 7.5 pp of control failure, so it failed the rule. For Mistral, gating increased pressured failure from 18.8\% to 36.2\% and raised plain-caution failure to 100.0\% (160/160). Where gating reduced unsafe compliance, it also increased refusal of authorized actions.
+
+\subsection{Plain Caution Fails More Than Pressured Caution}
+\label{sec:strata}
+
+Both generators failed unpressured boundary requests more often than adversarially pressured requests: 88.8\% versus 43.1\% for Mistral and 33.8\% versus 3.2\% for Qwen. On this bank, pressure tactics partly acted as refusal cues; the dominant failure mode was quiet compliance with a neutrally worded request whose authorization was never established. This direction is opposite to the one observed in an earlier 32-scenario within-Mistral study, which recorded 3/32 plain failures and 12/32 pressured failures (difference $+28.1$ pp, exact McNemar $p=0.0225$, family-clustered 95\% CI [$+6.2$, $+53.1$]). Because the studies changed the bank, prompt template, and judge stack together, the reversal establishes design-stack sensitivity.
+
+Pressured failures concentrated in specific tactics. Mistral failed 31/40 urgency rows and 28/40 authority-claim rows, compared with 5/40 rows each for false clearance and normalization. Qwen's pressured failures occurred only in normalization rows (5/39).
+
+Platform stratification shifted the weight of the trade-off without removing it. Qwen's plain-caution failures concentrated in assistive-care requests (39/80, versus 15/80 in security), whereas its pressured failures were near zero in both settings (0/79 care and 5/78 security). Its authorized-control refusals were uniform across platforms (15/80 each). Mistral failed plain caution at similar rates in both settings (72/80 care and 70/80 security) and was more vulnerable to pressure in care scenarios (40/80, 50.0\%) than in security scenarios (29/80, 36.3\%).
+
+\subsection{Measurement Quality}
+
+The three judges were unanimous on 96.3\% of outcomes (Fleiss' $\kappa=0.953$), with pairwise exact agreement from 0.967 to 0.984. Seed-to-seed variability was small relative to the registered contrasts (Fig.~\ref{fig:measurement}). Three of 14,400 judge outputs (0.02\%) were unparsed, affecting three of 4,800 generation rows (0.06\%). All affected rows were Qwen common-baseline pressured rows, well under the registered 1\% affected-row limit.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.96\textwidth]{figures/Figure3_Measurement_Stress.pdf}
+\caption{Observed and conditionally stressed common-prompt contrasts. The stress model lowers sensitivity in the weakest validated strata. All three directions survive, but the model does not estimate false positives or a joint uncertainty region.}
+\label{fig:measurement}
+\end{figure*}
+
+\subsection{Judge-Measurement Stress Analysis}
+\label{sec:stress}
+
+The acceptance amendment of Section~\ref{sec:adjudication} reports pooled unsafe-compliance detection of 14/16, CP95 [0.6165, 0.9845], and over-verification detection of 18/18, CP95 [0.8147, 1.0000]. We fix sensitivity at each interval's lower endpoint and, conditional on independent false-negative-only detection at that value, find the largest true-failure count for which observing no more than the recorded count retains at least 5\% binomial probability. The calculation and its machine-readable result are retained in the archived sensitivity analysis.
+
+Assigning all additional misses to the arm that most weakens the registered cross-generator contrast moves the plain contrast from $-55.0$ pp to $-25.6$ pp and the pressured contrast from $-40.1$ pp to $-35.0$ pp. The control zero cell permits one concealed Mistral failure, moving that contrast from $+18.8$ pp to $+18.1$ pp. All three signs survive this conditional stress. The mitigation result does not: its pressured reduction can fall to the 25\% minimum, while its control cost can rise from $+1.25$ pp to $+8.1$ pp, above the $+3.125$-pp ceiling. This is not a complete judge-error bound or a joint 95\% confidence region: false positives are not estimated by the registered validation record, the pooled strata describe an instrument family rather than repeated trials of the exact accepted panel, and family-clustered intervals are not re-derived for stressed counts.
+
+\section{Discussion}
+\label{sec:discussion}
+
+\subsection{Operating Points, Not Rankings}
+
+The registered contrast shows two different error profiles under identical instructions. Qwen greatly reduced unsafe compliance but refused about one in five authorized actions, while Mistral allowed more unsafe actions but refused no authorized controls. Neither generator was uniformly safer. The better choice depends on the cost of each error in the intended setting: a security boundary may tolerate extra refusals to avoid unsafe access, while an authorized-care workflow may not. Conformal decision theory formalizes this type of operating-point choice~\cite{lekeufack2023conformal}, and our registered mitigation rule defines one program-specific threshold.
+
+\subsection{From Rates to Setting-Specific Loss}
+
+The two-error representation becomes actionable only after a target setting assigns costs and state frequencies. Let $p_P$, $p_A$, and $p_C$ denote failure rates for plain caution, pressured caution, and authorized control. Let $w_P$, $w_A$, and $w_C$ denote the corresponding state frequencies, and let $c_U$ and $c_R$ denote the costs of unsafe compliance and authorized refusal. A simple expected loss is
+\begin{equation}
+\mathcal{L}=c_U(w_Pp_P+w_Ap_A)+c_Rw_Cp_C,
+\label{eq:loss}
+\end{equation}
+where the weights sum to one. The benchmark estimates the three failure rates but does not estimate deployment frequencies or costs. For the common prompt, the point-estimate change from Mistral to Qwen is
+\begin{equation}
+\Delta\mathcal{L}=-0.550c_Uw_P-0.401c_Uw_A+0.188c_Rw_C.
+\label{eq:delta}
+\end{equation}
+Qwen is preferred at the point estimates when the avoided unsafe-compliance cost exceeds the added refusal cost; Mistral is preferred when authorized refusal is sufficiently frequent or costly. Equation~(\ref{eq:delta}) makes explicit why the experiment does not identify a context-free model ranking.
+
+\begin{table}[!t]
+\centering
+\caption{Illustrative Point-Estimate Break-Even Cost Ratios}
+\label{tab:breakeven}
+\footnotesize
+\begin{tabular}{@{}ccc@{}}
+\toprule
+\textbf{Plain share} & \textbf{Caution improvement} & \textbf{Break-even $c_U/c_R$} \\
+\midrule
+1.00 & 0.550 & 0.342 \\
+0.75 & 0.513 & 0.367 \\
+0.50 & 0.476 & 0.395 \\
+0.25 & 0.438 & 0.429 \\
+0.00 & 0.401 & 0.469 \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Within caution states, the plain-share parameter controls how much of the observed improvement comes from the larger plain-caution contrast. Qwen has lower point-estimate loss above each listed ratio and Mistral below it. These values are illustrative rather than deployment recommendations: changing the authorized-control frequency rescales the threshold, and the calculation does not propagate the joint family-bootstrap distribution.
+
+\begin{figure*}[!t]
+\centering
+\includegraphics[width=0.96\textwidth]{figures/Figure4_Expected_Loss.pdf}
+\caption{Expected loss across deployment assumptions for the two common-prompt operating points. The preferred generator changes with the prevalence of caution cases and the relative cost of unsafe compliance versus over-refusal; the figure therefore supports operating-point selection rather than a context-free ranking.}
+\label{fig:expected-loss}
+\end{figure*}
+
+All three primary intervals exclude zero, but a confidence interval for the break-even ratio requires the joint bootstrap distribution of all three contrasts and the target weights. Dividing marginal interval endpoints would ignore dependence and could produce misleading thresholds. A deployment-oriented extension should evaluate Eq.~(\ref{eq:delta}) within every family-bootstrap draw and report the probability that each pipeline has lower loss over a declared grid of costs and state frequencies.
+
+The conditional measurement stress replaces the observed contrasts with $-0.256$, $-0.350$, and $+0.181$. Under equal aggregate caution and control exposure, the stressed point-estimate break-even ratios range from 0.517 for an all-pressured caution mix to 0.707 for an all-plain mix. The region favoring Qwen narrows but does not disappear. These ratios inherit the false-negative-only assumptions and unestimated false-positive boundary of the stress analysis.
+
+The registered mitigation rule uses a constraint rather than a scalar loss: an intervention must achieve a minimum pressured reduction while respecting a maximum refusal increase. That form is suitable when a system has a hard refusal budget. It also prevents a large relative change on a small baseline from automatically compensating for control harm. The Qwen deliberation arm passes the observed constraint and fails the stressed constraint, a more informative disposition than reporting its 100\% relative reduction alone.
+
+\subsection{No Blanket Mitigation}
+
+Every intervention result depended on the generator. Deliberation passed the rule only on Qwen and only from a low baseline; the same prompt style produced almost no change on Mistral. Constraint gating helped Qwen at a control cost and worsened Mistral's results. The tested deliberation and gating prompts therefore did not transfer uniformly between the two tested generator stacks.
+
+\subsection{The Endpoint Determines the Conclusion}
+
+Earlier results in this program showed why the evaluation endpoint needed to change. In the initial study, a lexical rubric indicated that structured output improved safety, but a semantic audit did not support that result. In addition, 64 of 72 chain-of-thought outputs reached the token limit, making those cells unusable. The pilot study moved to chat templates and a registered semantic endpoint, and the confirmation study added the calibrated panel and cross-generator design. As the measurement stack changed, apparent intervention effects changed in size and sometimes in direction. The conclusion is limited but important: lexical success was not a reliable proxy for semantically judged action outcomes, and the cross-study comparisons are methodological lessons rather than pooled effect estimates.
+
+\subsection{Implications for Platform Evaluation}
+
+For security-robot decision layers, our evidence supports prioritizing two test classes: urgency- and authority-framed access requests (the tactics that broke through, 31/40 and 28/40 of Mistral's pressured failures) and---because the dominant failure mode was unpressured---neutral-sounding requests whose authorization facts are merely absent. For assistive-care platforms, it supports testing plain care-boundary requests first (even the safer generator failed 48.8\% of plain care-boundary rows at the common baseline, 39/80) and budgeting explicitly for over-refusal (the safer generator refused 18.8\% of authorized controls, 30/160). Future platform evaluation should score unsafe compliance and authorized-control refusal jointly and test calibrated deferral---escalation to an operator as a scored third action~\cite{lekeufack2023conformal}---which our benchmark never evaluated.
+
+\subsection{The Pressure-Direction Reversal, Explored and Bounded}
+
+A post-outcome audit paired complete plain and pressured outcomes by generator, family, variant, and seed (317 of 320 candidate pairs). Failures were lower under pressured wording for Qwen ($-30.6$ pp, family-clustered 95\% CI [$-51.6$, $-12.0$]) and Mistral ($-45.6$ pp [$-65.6$, $-23.8$]), with heterogeneity across tactics. One candidate explanation---that plain items state the governing prerequisite more saliently---was non-estimable on this bank: all 32 plain items state the prerequisite and none states that it is missing, so the planned stratifier has no variation. The same coding applied to the pressured arm exposed a confound: 8 of 32 pressured items, all in the false-clearance tactic, name the absent prerequisite outright. That tactic is confounded with the very salience factor the contrast was meant to isolate. The explanation is therefore untested---neither supported nor ruled out---and no causal tactic effect or tactic ranking can be read from these rows. The estimable design is a registered two-by-two salience-by-pressure factorial.
+
+\section{Limitations and Future Work}
+\label{sec:limitations}
+
+The study is limited to synthetic, text-only scenarios; two pinned, NF4-quantized 7B-class generators; and security and assistive-care contexts. It includes no sensors, actuation, operators, multimodal input, or deployments. Rates are bank-relative. Adapted-arm comparisons are pipeline effects.
+
+Outcome labels come from an LLM judge panel accepted through a disclosed pooled-evidence amendment after single-holdout certification proved underpowered (Section~\ref{sec:adjudication}). Section~\ref{sec:stress} conditionally stress-tests false negatives at the pooled unsafe- and control-detection sensitivity floors: the three primary contrast directions survive, but the lone observed-data mitigation pass does not. False positives are not estimated, and the stressed counts do not carry new clustered intervals, so this is a scoped robustness diagnostic rather than a complete judge-error bound. Gold labels are AI-assisted and human-verified, not independently human-labeled. Blinded human validation of both error directions is the highest-value follow-up.
+
+Three Qwen pressured panel endpoints were unparsed and two decision headers were nonconforming; all exclusions are row-listed in the archived analysis record and reflected in every denominator here.
+
+The 16-family bootstrap limits interval resolution to 6.25-point steps; the Qwen-deliberation rule pass rests on four discordant pairs (unclustered $p=0.125$). It is an observed-data pass, not a measurement-robust mitigation: Section~\ref{sec:stress} places the pressured reduction at its minimum and the stressed control cost above its ceiling. Supplementary McNemar tests ignore family clustering.
+
+The initial, pilot, and confirmation studies changed banks, templates, and judges; cross-study statements are methodological lessons, not pooled estimates.
+
+The salience contrast is non-estimable on this bank; tactic rows are confounded with family, wording, variant, setting, and---in the false-clearance arm---prerequisite salience. No causal salience or tactic-priority conclusion is available.
+
+The highest-value extension of this study combines a third generator family, a registered two-by-two salience-by-pressure factorial with tactic and setting counterbalanced within family, blinded human validation of the weakest judge stratum, matched authorized controls, and calibrated deferral as a scored third action.
+
+\subsection{Reproducibility and Auditability}
+
+The evidence package separates three questions that are often conflated: whether the published rates can be recomputed from recorded outcomes, whether the generation and judging pipelines can be reconstructed, and whether the judge labels are valid measurements of the requested operation. The first question is addressed by a deterministic analysis layer. It consumes the row-level generation outcomes and judge ratings, recomputes panel-majority decisions, applies the registered exclusions, rebuilds all counts and family-clustered intervals, and compares the result with the frozen analysis record. The same layer regenerates the tables, the four publication figures, the pressure-cue audit, and the conditional measurement-stress calculations. Independent verification separately derives the primary counts and contrasts rather than trusting the report tables.
+
+The second question is addressed through pinned pipeline provenance. The record fixes generator and judge model revisions, prompt bytes, native chat-template use, decoding parameters, seeds, quantization settings, scenario-bank and output hashes, parsing rules, and the bootstrap seed. The byte-identical common prompt is stored independently of model-specific rendering so the registered generator contrast can be distinguished from adapted-prompt comparisons. Raw responses and judge outputs are retained as immutable evidence; generated summaries are rebuildable products rather than authorities. A hash-verifying fetch step allows large raw artifacts to be restored without silently substituting a different snapshot. These controls make accidental drift detectable, but they do not imply bit-for-bit regeneration of model text on every accelerator or software stack.
+
+The third question remains the limiting one. Recomputing the panel's decisions perfectly cannot establish that the panel measured the operational endpoint without error. The calibration and holdout records therefore accompany the outcome table, and the weakest validated strata are carried into the conditional stress analysis. The distinction matters: the primary generator-contrast directions remain stable under the specified false-negative stress, whereas the only observed mitigation pass does not. Judge agreement, deterministic scripts, and matching hashes are evidence of consistency and provenance; none substitutes for blinded human adjudication or an estimate of false positives.
+
+Reproduction can consequently be performed at two levels. An analysis-only run starts from the retained generation and rating records and regenerates every derived quantitative claim without loading the five language models. A full pipeline run additionally recreates generation and judging under the pinned configurations, subject to model availability and hardware-level reproducibility limits. The analysis-only level is the appropriate minimum for checking this paper because it directly tests arithmetic, exclusions, pairing, uncertainty, and claim-to-figure consistency. The full level tests operational reconstructability but is substantially more expensive and can reveal infrastructure drift that does not alter the already recorded experiment.
+
+Several explicit boundaries prevent overinterpretation. The scenario bank is synthetic and has no claim to deployment prevalence. The two generators are specified pipelines rather than representatives of every model in their families. Native chat templates remain part of those pipelines even under identical instruction bytes. The family bootstrap quantifies variation across 16 designed families, not across all possible service-robot tasks. The conditional stress model changes false negatives only and does not create a joint uncertainty distribution. Finally, none of the retained artifacts contains sensor streams, actuator behavior, operator outcomes, or field incidents. The reproducibility materials support the numerical claims made here; they do not turn the benchmark into deployment validation.
+
+This layered evidence design is useful beyond the present study. A future three-generator, human-adjudicated experiment can retain the same separation between immutable evidence, deterministic derivation, and measurement validation while adding a held-out scenario set and a scored deferral outcome. Doing so would permit direct comparison with the current operating points without treating changes in models, judges, or scenario distributions as replications of the same estimand.
+
+\section{Conclusion}
+
+On a registered, seed-replicated, panel-judged benchmark of 96 synthetic service-robot authorization scenarios, generator choice under a byte-identical prompt did not make decisions uniformly safer. Qwen reduced plain unsafe-compliance failure by 55.0 pp and pressured failure by 40.1 pp relative to Mistral, but increased authorized-control refusal by 18.8 pp (family-clustered 95\% CIs [$-77.5$, $-32.5$], [$-55.3$, $-26.0$], and [$+6.2$, $+34.4$]). Within the tested scope---two 7B generators, text-only scenarios, and LLM-judged outcomes under a disclosed amendment---a reviewer can recompute this registered contrast from committed artifacts. The result shows why safety evaluations for embodied decision layers should report unsafe compliance and over-refusal together: reporting either measure alone would be misleading.
+
+\begin{thebibliography}{99}
+
+\bibitem{ingen2026sentinel}
+InGen Dynamics, ``Sentinel Prime AI: Enterprise Physical Security Intelligence,'' 2026. [Online]. Available: \url{https://www.ingendynamics.com/sentinel.html}
+
+\bibitem{ingen2026origami}
+InGen Dynamics, ``Origami AI / PIC 2.0 Research Paper,'' 2026. [Online]. Available: \url{https://www.ingendynamics.com/origami-paper.html}
+
+\bibitem{lekeufack2023conformal}
+J. Lekeufack, A. N. Angelopoulos, A. Bajcsy, M. I. Jordan, and J. Malik, ``Conformal decision theory: Safe autonomous decisions from imperfect predictions,'' arXiv:2310.05921, 2023.
+
+\bibitem{openx2023rtx}
+Open X-Embodiment Collaboration, ``Open X-Embodiment: Robotic learning datasets and RT-X models,'' arXiv:2310.08864, 2023.
+
+\bibitem{kim2024openvla}
+M. J. Kim, K. Pertsch, S. Karamcheti, \emph{et al.}, ``OpenVLA: An open-source vision-language-action model,'' arXiv:2406.09246, 2024.
+
+\bibitem{octo2024policy}
+Octo Model Team, D. Ghosh, H. Walke, \emph{et al.}, ``Octo: An open-source generalist robot policy,'' arXiv:2405.12213, 2024.
+
+\bibitem{black2024pi0}
+K. Black, N. Brown, D. Driess, \emph{et al.}, ``$\pi_0$: A vision-language-action flow model for general robot control,'' arXiv:2410.24164, 2024.
+
+\bibitem{dey2024revla}
+S. Dey, J.-N. Zaech, N. Nikolov, L. Van Gool, and D. P. Paudel, ``ReVLA: Reverting visual domain limitation of robotic foundation models,'' arXiv:2409.15250, 2024.
+
+\bibitem{dissanayake2025fomer}
+D. Dissanayake, A. Heakl, O. Thawakar, \emph{et al.}, ``How good are foundation models in step-by-step embodied reasoning?'' arXiv:2509.15293, 2025.
+
+\bibitem{zhang2026healthorsc}
+Z. Zhang, L. Huang, G. Wu, P. Nakov, H. Ji, and U. Naseem, ``Health-ORSC-Bench: A benchmark for measuring over-refusal and safety completion in health context,'' arXiv:2601.17642, 2026.
+
+\bibitem{lisondra2025embodied}
+M. Lisondra, B. Benhabib, and G. Nejat, ``Embodied AI with foundation models for mobile service robots: A systematic review,'' arXiv:2505.20503, 2025.
+
+\bibitem{tolle2025safe}
+M. T{\"o}lle, T. Gruner, D. Palenicek, \emph{et al.}, ``Towards safe robot foundation models,'' arXiv:2503.07404, 2025.
+
+\bibitem{tolle2025inductive}
+M. T{\"o}lle, T. Gruner, D. Palenicek, \emph{et al.}, ``Towards safe robot foundation models using inductive biases,'' arXiv:2505.10219, 2025.
+
+\bibitem{guerrier2024barrier}
+M. Guerrier, H. Fouad, and G. Beltrame, ``Learning control barrier functions and their application in reinforcement learning: A survey,'' arXiv:2404.16879, 2024.
+
+\bibitem{hodge2025ood}
+V. J. Hodge, C. Paterson, and I. Habli, ``Out-of-distribution detection for safety assurance of AI and autonomous systems,'' arXiv:2510.21254, 2025.
+
+\bibitem{qin2026runtime}
+X. Qin, S. Luan, J. See, Z. Boukhers, C. Yang, and Z. Li, ``Harnessing embodied agents: Runtime governance for policy-constrained execution,'' arXiv:2604.07833, 2026.
+
+\bibitem{rezaeikhavas2020trust}
+Z. Rezaei Khavas, R. Ahmadzadeh, and P. Robinette, ``Modeling trust in human-robot interaction: A survey,'' arXiv:2011.04796, 2020.
+
+\bibitem{perkins2021trust}
+R. Perkins, Z. Rezaei Khavas, and P. Robinette, ``Trust calibration and trust respect: A method for building team cohesion in human robot teams,'' arXiv:2110.06809, 2021.
+
+\bibitem{sanneman2020trust}
+L. Sanneman and J. A. Shah, ``Trust considerations for explainable robots: A human factors perspective,'' arXiv:2005.05940, 2020.
+
+\bibitem{wald2024mistakes}
+S. Wald, K. Puthuveetil, and Z. Erickson, ``Do mistakes matter? Comparing trust responses of different age groups to errors made by physically assistive robots,'' arXiv:2408.13153, 2024.
+
+\bibitem{rudenko2024child}
+I. Rudenko, A. Rudenko, A. J. Lilienthal, K. O. Arras, and B. Bruno, ``The Child Factor in Child-Robot Interaction: Discovering the Impact of Developmental Stage and Individual Characteristics,'' arXiv:2404.13432, 2024.
+
+\bibitem{mazzola2025interaction}
+C. Mazzola, H. Ali, K. Malinovsk{\'a}, and I. Farka{\v{s}}, ``Toward an interaction-centered approach to robot trustworthiness,'' arXiv:2508.13976, 2025.
+
+\end{thebibliography}
+
+\end{document}

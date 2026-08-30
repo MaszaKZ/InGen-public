@@ -4,6 +4,7 @@ import json
 import hashlib
 import re
 import shutil
+import subprocess
 import sys
 import unittest
 import uuid
@@ -323,6 +324,32 @@ class PresentationContractTests(unittest.TestCase):
 
 
 class ReproducibilityPackageContractTests(unittest.TestCase):
+    def test_publication_figure_json_is_materialized_as_lf(self) -> None:
+        paths = tuple(
+            f"week-11/figures/{stem}.json"
+            for stem in (
+                "W11_Figure1_Operating_Point",
+                "W11_Figure2_Prompt_Tradeoffs",
+                "W11_Figure3_Measurement_Stress",
+                "W11_Figure4_Expected_Loss",
+            )
+        )
+        result = subprocess.run(
+            ["git", "check-attr", "eol", "--", *paths],
+            cwd=ROOT,
+            check=True,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        resolved = {
+            path: value
+            for line in result.stdout.splitlines()
+            for path, attribute, value in (line.split(": ", 2),)
+            if attribute == "eol"
+        }
+        self.assertEqual(resolved, {path: "lf" for path in paths})
+
     def test_packaged_figures_match_publication_outputs(self) -> None:
         package = W11 / "W11_Reproducibility_Package"
         stems = (

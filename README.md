@@ -17,6 +17,7 @@ This repository contains public-safe research deliverables for the AI Researcher
 | `week-09/` | Week 9 research paper draft v1, self-critique, meeting-feedback record, generated paper tables, and verifier. |
 | `week-10/` | Week 10 paper draft v2, conditional judge-measurement stress analysis, reproducibility package (externalized raw evidence, pinned requirements, one-command regeneration), capstone outline, and verifier. |
 | `week-11/` | Week 11 IEEEtran capstone report, research-review deck, publication figures, and the standalone self-contained reproducibility package. |
+| `week-12/` | Week 12 final workshop paper, retrospective, presentation/defense brief, reproducibility audit, research log, and integrated verifier. |
 
 ## Completed Deliverables
 
@@ -262,6 +263,26 @@ python run_acceptance.py --model-policy allow-missing
 See `week-11/README.md` and `week-11/W11_Reproducibility_Package/README.md` for
 the artifact map, model download and checksum verification, the minimal GPU
 smoke pipeline, and the full reproduction procedure.
+
+### Week 12 — Final Paper, Retrospective & Verification
+
+Week 12 converts the registered study into a final audience-facing workshop
+paper and closes the technical evidence loop. The synchronized Markdown and
+IEEEtran sources compile to a visually audited 10-page PDF with four
+publication figures and 22 references. A research retrospective identifies
+measurement validity as the primary weakness and specifies a preregistered
+three-generator, human-adjudicated follow-up. The 14-slide defense brief covers
+the 30-minute presentation and 20-minute research Q&A without introducing
+claims beyond the registered evidence.
+
+- `week-12/W12_Final_Paper.md`, `.tex`, and `.pdf`
+- `week-12/W12_Retrospective.md`
+- `week-12/W12_Presentation_Defense_Brief.md`
+- `week-12/W12_Reproducibility_Audit.ipynb`
+- `week-12/Wk-12-Final-ResearchLog.md`
+- `week-12/test_w12.py` and `verify_w12.py`
+
+See `week-12/README.md` for the final artifact map and verification command.
 
 ## AI Assistance
 

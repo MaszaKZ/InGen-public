@@ -14,3 +14,12 @@ week-07/** -text
 # Generated-in-place table file: the generator writes LF explicitly, so pin
 # checkout to LF everywhere to keep regeneration byte-identical on Windows.
 week-09/W09_Paper_Tables.md eol=lf
+# The Week 11 package embeds a byte-exact copy of this evidence file, so pin
+# checkout to LF everywhere to keep the continuity hash pair stable across
+# private and exported checkouts.
+week-10/W10_Judge_Sensitivity.json eol=lf
+# Publication JSON is copied byte-for-byte into the Week 11 review package.
+# Pin checkout to LF so fresh Windows worktrees preserve that identity.
+week-11/figures/*.json eol=lf
+# Preserve every audited snapshot byte across Git add and checkout operations.
+* -text

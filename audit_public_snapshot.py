@@ -18,7 +18,7 @@ from pathlib import Path, PurePosixPath
 from urllib.parse import unquote
 
 
-SOURCE_COMMIT = "1989f335c7562b8f74444286ebc26c317bfe5024"
+SOURCE_COMMIT = "34e48efc2ed8bf981830b1a96ceadca33e85cb0c"
 PROVENANCE_SCHEMA = "ingen-public-snapshot-v1"
 EXPORT_SCHEMA = "ingen-public-export-v1"
 DATA_SCHEMA = "w10-data-manifest-public-v1"
@@ -424,6 +424,7 @@ def verify_document_structure(root: Path) -> None:
             "week-11/W11_Reproducibility_Package/artifacts/report/Capstone_Report.tex",
             "week-11/W11_Reproducibility_Package/artifacts/report/Capstone_Report.pdf",
         ),
+        ("week-12/W12_Final_Paper.tex", "week-12/W12_Final_Paper.pdf"),
     )
     for tex_relative, pdf_relative in pairs:
         try:
@@ -589,6 +590,10 @@ def run_public_commands(root: Path) -> tuple[CommandResult, ...]:
             ),
             cwd=harness,
             env=env,
+        )
+        commands.append(result)
+        result, _ = _run_checked(
+            "w12", (python, "week-12/verify_w12.py"), cwd=harness, env=env
         )
         commands.append(result)
         python_paths = tuple(

@@ -1,0 +1,43 @@
+{
+  "observed": {
+    "alphas": [
+      {
+        "alpha": 1.0,
+        "break_even_cost_ratio": 0.342,
+        "caution_improvement": 0.55
+      },
+      {
+        "alpha": 0.5,
+        "break_even_cost_ratio": 0.395,
+        "caution_improvement": 0.4755
+      },
+      {
+        "alpha": 0.0,
+        "break_even_cost_ratio": 0.469,
+        "caution_improvement": 0.401
+      }
+    ],
+    "control_delta": 0.188
+  },
+  "stressed": {
+    "alphas": [
+      {
+        "alpha": 1.0,
+        "break_even_cost_ratio": 0.707,
+        "caution_improvement": 0.256
+      },
+      {
+        "alpha": 0.5,
+        "break_even_cost_ratio": 0.597,
+        "caution_improvement": 0.303
+      },
+      {
+        "alpha": 0.0,
+        "break_even_cost_ratio": 0.517,
+        "caution_improvement": 0.35
+      }
+    ],
+    "control_delta": 0.181
+  },
+  "weighting": "equal aggregate caution and authorized-control exposure"
+}
